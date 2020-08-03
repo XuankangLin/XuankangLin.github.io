@@ -1,0 +1,9 @@
+LISA MP
+{
+x = 0;
+y = 0;
+}
+ P0       | P1        | P2;
+ w[] x 1  | r[] r1 y  | w[] x 2;
+ w[] y 1  | r[] r2 x  | w[] y 3;
+exists (1:r1 = 1 /\ 1:r2 = 0)

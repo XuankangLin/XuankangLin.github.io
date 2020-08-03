@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Mutual Exclusion Algorithms</h1><p class="post-meta">Posted on Jan 28, 2016 · <a href="/tags/CN/" class="tag post-meta">CN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>在准备Qual2的时候看到了几个mutual exclusion algorithm, 那篇paper里举这么几个例子是为了说明他们的new program logic的可用性。但是一直拖到了现在505 TA的课上也说到了类似的东西才终于来写一篇总结..</p>
+<a id="more"></a>
+<p><br></p>
+<p>其实也并没有特别深入的去了解对比每一个算法，也不全，不过有写总比没写好，对吧..</p>
+<h2 id="Spinlock"><a href="#Spinlock" class="headerlink" title="Spinlock"></a>Spinlock</h2><p>「自旋锁」这个名字其实很不直白，本质其实就是一个thread busy wait, 直到这个lock真正空出来。Wiki上说，spinlock的优势在于，当context switch的overhead比较大，而预期等待时间比较短的时候，用spinlock直接死等会更好。</p>
+<p>一种实现如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lock(l):</span><br><span class="line">	r := <span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> (r == <span class="number">0</span>) &#123;</span><br><span class="line">		r := CAS(l, <span class="number">0</span>, m)  <span class="comment">// m is thread ID, l == 0 means available</span></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>如果还不太了解CAS, 出门右转<a href="https://en.wikipedia.org/wiki/Compare-and-swap" target="_blank" rel="noopener">wiki</a>. 它表示一个atomic operation内，只有当<code>l == 0</code>的时候才将其设置成m.</p>
+<h2 id="Peterson’s-Algorithm"><a href="#Peterson’s-Algorithm" class="headerlink" title="Peterson’s Algorithm"></a>Peterson’s Algorithm</h2><p>直接上代码吧：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> flag[<span class="number">0</span>] = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">bool</span> flag[<span class="number">1</span>] = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">int</span> turn;</span><br><span class="line"></span><br><span class="line">P0:</span><br><span class="line">	flag[<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">	turn = <span class="number">1</span>; <span class="comment">// P0_gate</span></span><br><span class="line">	<span class="keyword">while</span> (flag[<span class="number">1</span>] <span class="keyword">and</span> turn == <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="comment">// busy wait</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// in critical section</span></span><br><span class="line">	flag[<span class="number">0</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">P1:</span><br><span class="line">	flag[<span class="number">1</span>] = <span class="literal">true</span>;</span><br><span class="line">	turn = <span class="number">0</span>; <span class="comment">// P1_gate</span></span><br><span class="line">	<span class="keyword">while</span> (flag[<span class="number">0</span>] <span class="keyword">and</span> turn == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">// busy wait</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// in critical section</span></span><br><span class="line">	flag[<span class="number">1</span>] = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+<p>显然，这个有个要求就是：write propagates immediately and atomically. 所以relaxed memory model下、或者compiler乱序优化一下就跪了。</p>
+<p>这里为啥能够达到mutual exclusion呢？当Pi在critical section中的时候，显然<code>flag[i] == true</code>, 此时，P_{1-i}有这么几种情况：（只有这几个地方修改了相关变量）</p>
+<ol>
+<li><p><code>flag[1-i] = true;</code>以及<code>turn = i</code>都还没有执行。所以一会儿它执行到while loop的时候，将会再次更新turn为i, 因此满足了<code>while (flag[i] and turn == i)</code>的条件，进入死等状态。</p>
+</li>
+<li><p>执行了<code>flag[1-i] = true;</code>, 但是还没有执行<code>turn = i</code>. 这个和第一种情况没差别，这个process一会执行的时候也是会更新turn然后堵在while loop那里busy waiting.</p>
+</li>
+<li><p>已经都执行了<code>flag[1-i] = true; turn = i</code>的设置，但是既然Pi已经进入了critical section, 就说明Pi这里的<code>flag[1-i] &amp;&amp; turn == 1-i</code>的while loop条件没有满足，因此turn肯定是设置成了i, 于是P_{1-i}那里就会busy waiting. 不会进入critical section.</p>
+</li>
+</ol>
+<p>综上所有条件都说明会busy waiting, 不会同时进入critical section.</p>
+<p>那么会不会卡在路口那里俩人都不得动弹呢？不会的。因为现在有了”write propagates immediately and atomically”的假定，所以即使两个process都执行完所有的设置语句来到while loop面前了，它们俩的turn变量赋值一定会决出一个胜负。所以一定有一个人进入while loop busy wait, 另一个人直接进入critical section. 反正遍历所有可能的执行顺序组合，都会出现一个process在critical section里头，另外的一个在外头busy waiting的情形啦。</p>
+<p>此外更进一步的guarantee是：一个process在离开critical section之后，假设有其它process正在等待，那么就不会立马重新进入critical section. 所以每个process都能有bounded-waiting guarantee.</p>
+<p>以上只是对于2 processes的情况，关于如何适应&gt;2 proc的情况，我就没有看了。</p>
+<p><br></p>
+<p>话说，我感觉<a href="https://en.wikipedia.org/wiki/Dekker%27s_algorithm" target="_blank" rel="noopener">Dekker’s Algorithm</a>和Peterson’s Algorithm超像的，不过应该是因为更晚才发布，Peterson的这个确实更加清晰明了，<a href="http://cs.stackexchange.com/questions/12621/contrasting-peterson-s-and-dekker-s-algorithms" target="_blank" rel="noopener">网上</a>也确实有人好奇问过这个问题的。</p>
+<h2 id="Bakery-Algorithm"><a href="#Bakery-Algorithm" class="headerlink" title="Bakery Algorithm"></a>Bakery Algorithm</h2><p>这是Lamport大神提出的，for multiple threads.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Initalization:</span><br><span class="line">	flag: <span class="built_in">array</span> [<span class="number">1.</span>.N] of <span class="keyword">bool</span> = &#123; <span class="literal">false</span> &#125;;</span><br><span class="line">	label: <span class="built_in">array</span> [<span class="number">1.</span>.N] of <span class="keyword">int</span> = &#123; <span class="number">0</span> &#125;; <span class="comment">// assume no bound</span></span><br><span class="line"></span><br><span class="line">For Proc i that wishes to enter critical section:</span><br><span class="line">	flag[i] = <span class="literal">true</span>; <span class="comment">// enter the doorway</span></span><br><span class="line">	label[i] = <span class="number">1</span> + max(label[i], ..., label[N]); get ticket</span><br><span class="line">	flag[i] = <span class="literal">false</span>; <span class="comment">// exit the doorway</span></span><br><span class="line">	<span class="keyword">for</span> j = <span class="number">1</span> to N such that j≠i &#123;</span><br><span class="line">		<span class="keyword">while</span> (flag[j]); <span class="comment">// wait until j is not in doorway</span></span><br><span class="line">		<span class="keyword">while</span> (label[j]≠<span class="number">0</span> <span class="keyword">and</span> (label[j], j) &lt;&lt; (label[i], i); <span class="comment">// wait until j is not "ahead"</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// critical section</span></span><br><span class="line">	label[i] = <span class="number">0</span>; <span class="comment">// exit section</span></span><br></pre></td></tr></table></figure>
+<p>Why this works? 直接用Lamport大神最开始的比喻就很好理解了：</p>
+<ol>
+<li><p>在一个bakery store, 进来的顾客要先拿号，上头的”doorway”就是拿号的过程。注意，这里是允许几个threads拿到了同样的号的，那样的话就break the ties using thread ID, 就是同时比较<code>label[i], i</code>的过程。号存在label[i]里。</p>
+</li>
+<li><p>然后拿好号之后就开始排队，准确的说就是等我拿到的号最小了，那么就轮到我了。这里需要先等待没人正在doorway取号中，为什么呢？</p>
+<ul>
+<li>当这个等待过后，若是有人再去取号，获得的号肯定是比我的大的，所以不用操心。</li>
+<li>而如果不执行这个wait就直接进入比号的阶段的话，我看到网上说，好像是因为<code>max()</code>此时并不假定是atomic的。那我就能理解了。</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-slot-Algorithm"><a href="#4-slot-Algorithm" class="headerlink" title="4-slot Algorithm"></a>4-slot Algorithm</h2><p><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=41349&amp;tag=1" target="_blank" rel="noopener">Simpson’s 4-slot Algorithm</a>, 这个在那篇paper里举例说到了，在505的课程上没有打算提到。这个算法是设计用来确保 a single write &amp; a single reader 之间的mutual exclusion的。</p>
+<p>其代码其实很简单，但是就是很绕不好看懂！Richard Bornat有专门一个<a href="http://www.eis.mdx.ac.uk/staffpages/r_bornat/slides/Simpson.pdf" target="_blank" rel="noopener">slides</a>来介绍这个，里头是这么写的：</p>
+<blockquote>
+<p>Programming is really hard: only nine lines, no CAS, and you still can’t understand it</p>
+</blockquote>
+<p>哈哈哈哈哈，我竟无法反驳..</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">global variables:</span><br><span class="line">	reading : <span class="keyword">bool</span>, initialized to <span class="number">0</span> <span class="comment">// the pair about to be, being, or last read</span></span><br><span class="line">	latest : <span class="keyword">bool</span>, initialized to <span class="number">0</span> <span class="comment">// the pair last written</span></span><br><span class="line">	slot : [<span class="number">0.</span><span class="number">.1</span>], both initialized to <span class="number">0</span></span><br><span class="line">	data : [<span class="number">0.</span><span class="number">.1</span>][<span class="number">0.</span><span class="number">.1</span>], all initialized to null</span><br><span class="line"></span><br><span class="line">Writer (item : datatype):</span><br><span class="line">	pair := ¬reading</span><br><span class="line">	index = ¬slot[pair]</span><br><span class="line">	data[pair,index] = item;</span><br><span class="line">	slot[pair] := index;</span><br><span class="line">	latest := pair;</span><br><span class="line"></span><br><span class="line">Reader:</span><br><span class="line">	pair := latest</span><br><span class="line">	reading := pair</span><br><span class="line">	index := slot[pair]</span><br><span class="line">	<span class="keyword">return</span> data[pair, index]</span><br></pre></td></tr></table></figure>
+<p>代码理解如下：</p>
+<ul>
+<li><p>上边里头的pair以及index都是local variable.</p>
+</li>
+<li><p>关于slot[0]以及slot[1], 原文解释如下：Each element of this array indicates the index of the slot which contains the latest data within the corresponding pair.</p>
+</li>
+<li><p>对于writer来说，挑¬reading作为新pair很显然的，然后第一次slot[pair]读到的值是上一次写的位置，所以这一次就要换一个位置了。slot[reading]和slot[¬reading]是独立存档的，所以没事。</p>
+</li>
+<li><p>Why it works? 简要的说，它存了好几份copy在<code>data[0..1][0..1]</code>里，因此可以做到你写你的，我读我的。注意，这里reader是先更新了<code>reading</code>再真正去读数据，而writer是写好之后再更新<code>latest</code>. 一旦reader声明了我要读之后，writer如果还有动作，则要嘛是有新的东西要开始写——那肯定是写在另一个pair里了；要嘛是有新的东西已经写到一半只是还没有更新latest, 那么看情况吧，reader读到latest written (not published yet)还是second to latest都有可能。</p>
+</li>
+<li><p>显然，writer这里需要是latest更新的时候，之前的update都publish出去的呀。因此，再一次，这个算法的未修改版本（i.e. 未加fences)对于relaxed memory models或者compiler reordering都是不能继续保证正确性的。</p>
+</li>
+</ul>
+<p>经paper中提醒我才注意到，这个algorithm里是没有岔路的哦，一条路走到底！设计这么个算法是要满足3个属性的：</p>
+<ul>
+<li><em>Asynchronism</em>: writer和reader不会影响对方的执行时间，即我不block你</li>
+<li><em>Coherence</em>: 原句是：interleaved access to any data record by the writer and the reader is not permitted. 不过这句话本身也不直白。我直接理解为各种memory model里经常出现的那个coherence了，即所有的write是有一个total order的。各种read也不会先读到后来的write再读到更早的write.</li>
+<li><em>Freshness</em>: Writer写好的”latest complete data record”一定要被reader读到，一complete即available.</li>
+</ul>
+<p>电视机前的小朋友们还有可能会问：</p>
+<ul>
+<li><p>为啥2-slot不行呢：paper上说：</p>
+<blockquote>
+<p>The two-slot mechanism fails because there are circumstances in which the writer requires a slot for new data but the reader is still busy with the slot containing the last-but-one data item.</p>
+</blockquote>
+<p>  而如果硬是要使用2-slot的话，就只能要嘛牺牲coherence, 要嘛牺牲freshness了。那么为啥4-slot就解决了这个问题了呢：4-slot直接写到另一个pair里去了呀，然后如果reader一直沉迷在旧数据中不可自拔，而writer一直有新数据来的话，那么reader从最老的一两个数据，跳过其间的很多个数据，直接来读最新的一两个数据也是完全没有问题的。</p>
+</li>
+<li><p>为啥3-slot不行呢：paper上(P21)讲了2 flaws, 但是并没有很理解.. 也无法复述在这里.. 似乎是关于interleaving of control variables时的预料外情况吧。4-slot中关于这个的话，是分了2个pair来分别分档进度的，应该能好一些。</p>
+</li>
+<li><p>为啥4-slot就足够了呢：呃.. 上边一长串已经大约解说了为啥it works, 至于为啥选4这个数字，仅仅是因为2x2的吧。</p>
+</li>
+</ul>
+<p>关于这个算法就先这样吧，知道大致的思路了，以后若是有具体用到的地方再来细细探索吧。</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2016/02/03/Memory-Models-in-Go/" data-toggle="tooltip" data-placement="top" title="Memory Model in Go?">← Previous Post</a></li><li class="next"><a href="/2016/01/14/人类简史：从动物到上帝/" data-toggle="tooltip" data-placement="top" title="人类简史：从动物到上帝">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>

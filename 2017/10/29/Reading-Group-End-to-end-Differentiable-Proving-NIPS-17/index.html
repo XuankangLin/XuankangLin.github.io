@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Reading Group: End-to-end Differentiable Proving (NIPS'17)</h1><p class="post-meta">Posted on Oct 29, 2017 · <a href="/tags/EN/" class="tag post-meta">EN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>I lead the discussion about this paper <a href="https://arxiv.org/abs/1705.11040" target="_blank" rel="noopener">End-to-end Differentiable Proving</a> in our reading group on 10/27/2017. The paper is to appear on NIPS’17.</p>
+<a id="more"></a>
+<p><a href="http://aitp-conference.org/2017/slides/Tim_aitp.pdf" target="_blank" rel="noopener">Official slides</a>. I’ll use some examples from official slides to elaborate their idea.</p>
+<p>Please do not hesitate to correct me if I am wrong anywhere. Thanks in advance. 🙂</p>
+<p><br></p>
+<h2 id="Term-Clarification"><a href="#Term-Clarification" class="headerlink" title="Term Clarification"></a>Term Clarification</h2><p>To begin with, it may be necessary to clarify on the term <font color="blue"><em>distributed representation</em></font> a bit. Distributed Systems is a big focus in our group but it has nothing to do with the term <em>distributed representation</em> here.</p>
+<p>First of all, the word <code>king</code> can be represented as <code>0 0 1 0 ... 0</code> regarding a dictionary $D$ if <code>king</code> is the 2nd (zero-based) word in $D$. Only the 2nd bit is 1, and all the rest are 0. The size of this vector is the size of $D$. This is called <em>one-hot encoding</em>.</p>
+<p>Then <em>distributed representation</em> is like the dual concept of <em>one-hot encoding</em>, it can have multiple non-zero values, say <code>0.12 0.0 0.87 -0.77 ... 0.99</code>.</p>
+<p>This is also called <font color="blue"><em>embedding</em></font>, it is essentially a vector in the high dimension space representing the original word. After training, semantically related words are supposed to have close vectors in high dimension space. Moreover, some relation between words may also be learned, as shown below:</p>
+<p><img src="embedding.jpg" alt></p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Now let’s take a closer look at this paper. I think this paper is very interesting, in that it successfully integrates ML techniques and PL techniques, and can “induce logical rules”!</p>
+<h3 id="Previously-in-PL"><a href="#Previously-in-PL" class="headerlink" title="Previously in PL"></a>Previously in PL</h3><p>There is the so-called <em>backward chaining</em> algorithm as in Prolog that can search and construct a proof for some goal. For example: <img src="backward_chaining.png" alt></p>
+<ul>
+<li><p>In the example Knowledge Base (KB), (1) and (2) are facts, (3) is a rule – to prove that X is grandfather of Y, it suffices to satisfy two subgoals:</p>
+<ul>
+<li>first, prove that X is the father of some Z,</li>
+<li>and second, prove Z is the parent of Y.</li>
+</ul>
+</li>
+<li><p>To search and construct a proof for the goal “ABE is grandfather of BART”, it first searches in KB if any header of rule/fact matches with the goal (<font color="blue">OR rule</font>). In this example, rule (3) matches, so X is linked with ABE, Y is linked with BART.</p>
+</li>
+<li><p>Then it has to prove both of the 2 subgoals (<font color="blue">AND rule</font>), which is what 3.1 and 3.2 are doing. It recursively proves each subgoal by searching for matched rules in the KB.</p>
+</li>
+</ul>
+<p>It is that simple. But this traditional backward chaining algorithm is based on symbolic matching. In other words:</p>
+<ul>
+<li><code>grandpaOf(A, B)</code> and <code>grandfatherOf(A, B)</code> are not equal, unless specified explicitly elsewhere.</li>
+<li><code>parentOf(A, B)</code> and <code>fatherOf(A, B)</code> are not similar, unless specified explicitly elsewhere.</li>
+<li><code>isFruit(apple)</code> and <code>isFruit(orange)</code> are not related at all, unless “apple ~ orange” is specified explicitly elsewhere.</li>
+</ul>
+<p>These are where ML technique can help!</p>
+<h3 id="Previously-in-ML"><a href="#Previously-in-ML" class="headerlink" title="Previously in ML"></a>Previously in ML</h3><p>There is the so-called <em>Neural Link Prediction</em> problem whose main approach is based on <em>embedding</em>. <img src="neural_link_prediction.png" alt></p>
+<p>According to paper description, those are unable to directly encode prior knowledge such as <code>grandfatherOf(X, Y) :- fatherOf(X, Z) &amp; parentOf(Z, Y)</code>.</p>
+<p>This missing <em>multi-hop reasoning</em> ability will be added after incorporating the <em>backward chaining</em> search algorithm!</p>
+<h2 id="Integration"><a href="#Integration" class="headerlink" title="Integration"></a>Integration</h2><p>This paper merges existing “Neural Link Prediction” idea (mainly via learning embeddings of sub-symbolic terms) with traditional “backward chaining” algorithm in Prolog.</p>
+<p>More specifically, the “proof search” process is a divide-and-conquer style backward chaining search algorithm, with the most fundamental “symbolic unification” op being replaced by “embedding similarity comparison”.</p>
+<p>The integration in this paper satisfies one sufficient condition for successful ML/PL integration I mentioned before – ML introduces new information that is hard for PL to discover by itself.</p>
+<p><br></p>
+<p>For more details, there is this <em>proof state</em> $S = S_ψ, S_ρ$:</p>
+<ul>
+<li>$S_ψ$ is the substitution set, it stores the instantiation of variables in rule to concrete terms.</li>
+<li>$S_ρ$ is the proof success score (confidence) so far. It will only decrease.</li>
+</ul>
+<p>When doing inference, it follows the same basic search algorithm as that in traditional backward chaining algorithm. The proof state will be passed along, and sometimes multiple proof states (for multiple subgoals) will be generated, and aggregated later on.</p>
+<h3 id="UNIFY"><a href="#UNIFY" class="headerlink" title="UNIFY"></a>UNIFY</h3><p>The major difference is in <font color="blue"><em>unification</em></font> module which matches the sub-symbolic terms in goal and knowledge base. Instead of symbolic unification (e.g. <code>f(A, B) ~ f(Alice, Bob) ⇒ A/Alice, B/Bob</code>), it compares the embedding of 2 non-variable symbols using RBF kernel.</p>
+<ul>
+<li>RBF kernel can output a score for two vectors.</li>
+<li>I suspect the reason of using RBF kernel is to train jointly with Neural Link Predictor later on. They mentioned this optimizer in the paper later on. That Neural Link Predictor is used as a “regularizer” towards better training.</li>
+</ul>
+<p>The unification module is shown as below. <img src="unification.png" alt></p>
+<ul>
+<li><p>(1)-(4) are self-explanatory, just list comparison.</p>
+</li>
+<li><p>$S_ψ’$ is adding more variable matches into substitution set. This is the same as traditional backward chaining algorithm.</p>
+</li>
+<li><p>$S_ρ’$ is the difference. This proof success score is updated to the min of all sub-symbolic pairwise comparison results, with the cap of previous score. Note that it only compares non-variable symbols.</p>
+</li>
+</ul>
+<p>Consider the following example: <img src="unify.png" alt></p>
+<ul>
+<li><p>It tries to unify <code>[grandpaOf, ABE, BART]</code> with <code>[s, Q, i]</code>, the given proof state is an empty substitution set ∅ and a proof score 0.7.</p>
+</li>
+<li><p>Only <code>Q</code> is variable here, and <code>Q</code> is matched to <code>ABE</code>.</p>
+</li>
+<li><p>Then $S_ρ’$ is the min of 0.7 (upstream success score), and two sub-symbolic pairwise comparison results for <code>grandpaOf~s</code> and <code>BART~i</code>.</p>
+</li>
+</ul>
+<h3 id="OR-AND"><a href="#OR-AND" class="headerlink" title="OR / AND"></a>OR / AND</h3><p>There are also corresponding <em>OR module</em> and <em>AND module</em> that are simply re-implementations of traditional backward chaining algorithm with different notations to handle proof state $(S_ψ, S_ρ)$.</p>
+<h3 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h3><p>With all these, the actual proof search is to find the largest proof tree that maximizes the proof success score $S_ρ$ with a non-FAIL result: <img src="ntp_inference.png" alt></p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><img src="ntp_example.png" alt></p>
+<p>Consider the same example now using their Neural Theorem Prover approach. It is trying to prove some goal of <code>(s, i, j)</code>, none of which are variables. $V_s$ is the vector representation (embedding) of <code>s</code>.</p>
+<ul>
+<li>From my understanding, <code>(s, i, j)</code> is a parameterized template, but not concrete values, yet. Now that the unification is done by embedding similarity scores, it can find multiple non-fixed terms (each with a confidence score) with a similar shape. This can be used in their another application of “inducing logical rules”.</li>
+</ul>
+<p>The divide-and-conquer search strategy is no different than before. But as you can see in the rightmost path from (3.1) –(rule 2)-&gt; (3.2), it is able to unify goal <code>fatherOf</code> with fact <code>parentOf</code>, which was impossible using PL method alone.</p>
+<!-- The `failure` is perhaps because `fatherOf` has quite different embedding from `grandfatherOf` after training. -->
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p>The training is done using just existing facts and rules in the Knowledge Base. But there is one problem – all of those are positive data. Obviously, learning from fully imbalanced data won’t be effective.</p>
+<p>They use <em>negative sampling</em> to handle this issue. Negative sampling was also used in the famous Word Embedding work in 2013. It manually corrupts some data and expect the model to predict 0 for them. With both positive and negative data, it just use the canonical Negative Log-Likelihood loss function.</p>
+<p>So along the recursive divide-and-conquer search process, the gradients during embedding comparison will be collected and optimized accordingly.</p>
+<h3 id="Joint-Training-with-Neural-Link-Predictor"><a href="#Joint-Training-with-Neural-Link-Predictor" class="headerlink" title="Joint Training with Neural Link Predictor"></a>Joint Training with Neural Link Predictor</h3><p>But, just by the technique described so far it still cannot outperform previous tools in all their datasets. By Neural Theorem Prover alone, the training is slow and less effective.</p>
+<p>One important optimization is to do joint training with Neural Link Predictor (ξ3.8). The neural link predictor ComplEx they use can learn local sub-symbolic representations much better, which uses RBF as well (that’s why I suspect they are using RBF because of this).</p>
+<p>So the loss is just by adding NTP loss and ComplEx loss. In other words, ComplEx serve as a regularizer here.</p>
+<h2 id="Inducing-Logical-Rules"><a href="#Inducing-Logical-Rules" class="headerlink" title="Inducing Logical Rules"></a>Inducing Logical Rules</h2><p>Wait, one more thing!</p>
+<p>They claim to be able to “induce” logical rules! As shown below: <img src="induced_rules.png" alt></p>
+<p>It can induce the rule such as “To prove that X is located in Y, it can prove that X is located in some Z and Z is located in Y”.</p>
+<p>Isn’t this awesome?! Well, it’s not pure magic. Some “parametrized rule” needs to be provided as a template, such as <code>r(X, Y) :- s(X, Z), t(Z, Y)</code>.</p>
+<p>The idea is that:</p>
+<ul>
+<li><p>During training, the embedding of this parameterized rule is optimized jointly with everything else.</p>
+</li>
+<li><p>After training, inspect this parametrized rule by searching for known predicate representations that are collectively closest to the template in high dimension space.</p>
+</li>
+</ul>
+<p>The logical rule of specified format is thereby induced. I just found this idea to be very interesting!</p>
+<p>□</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2017/11/09/午间夜话合辑1710/" data-toggle="tooltip" data-placement="top" title="午间夜话合辑1710">← Previous Post</a></li><li class="next"><a href="/2017/09/30/资治通鉴——魏、晋/" data-toggle="tooltip" data-placement="top" title="资治通鉴——魏、晋">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>

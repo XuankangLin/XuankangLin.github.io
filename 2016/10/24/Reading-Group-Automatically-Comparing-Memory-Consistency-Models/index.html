@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Reading Group - Automatically Comparing Memory Consistency Models</h1><p class="post-meta">Posted on Oct 24, 2016 · <a href="/tags/EN/" class="tag post-meta">EN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>Here is my note for presenting this new paper <a href="http://johnwickerson.github.io/papers/memalloy.pdf" target="_blank" rel="noopener">Automatically Comparing Memory Consistency Models</a> in our weekly paper reading group on 10/21/2016. See our reading group <a href="http://purduepl.github.io/reading-group.html" target="_blank" rel="noopener">webpage</a> in 16fall.</p>
+<a id="more"></a>
+<p><br></p>
+<p>Please do not hesitate to correct me if I am wrong anywhere. Thanks in advance. 🙂</p>
+<h2 id="Why-picked-this-paper"><a href="#Why-picked-this-paper" class="headerlink" title="Why picked this paper"></a>Why picked this paper</h2><p>This new paper will appear in the upcoming POPL’17. It’s related to what I have been thinking about for a while. As you’ll see, the idea in the paper is very inspiring, I quite like this paper.</p>
+<h2 id="Some-short-background"><a href="#Some-short-background" class="headerlink" title="Some (short) background"></a>Some (short) background</h2><h3 id="Memory-Consistency-Models"><a href="#Memory-Consistency-Models" class="headerlink" title="Memory Consistency Models"></a>Memory Consistency Models</h3><p>I usually use a shorter term “Memory Models” for them. They essentially define what values can be returned for a READ in different scenarios, mostly in a concurrent setting.</p>
+<h3 id="Litmus-Tests"><a href="#Litmus-Tests" class="headerlink" title="Litmus Tests"></a>Litmus Tests</h3><p>Litmus tests are essentially some tiny concurrent program snippets with a final assertion specifying which is the expected behavior. For example:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Initially:</span><br><span class="line">  x = y = r1 = r2 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">T1:          T2:</span><br><span class="line">  x := <span class="number">1</span>  ||   y := <span class="number">1</span></span><br><span class="line">  r1 := y ||   y2 := x</span><br><span class="line"></span><br><span class="line">Condition: ∃ state . r1 = r2 = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>Generally it is enough for the final condition to refer to a specific state instead of some abstract assertions. There might be more abstract expressive litmus tests, but at least this paper only takes this form, for the purpose of their Execution→LitmusTest synthesis.</p>
+<h2 id="What-they-have-done"><a href="#What-they-have-done" class="headerlink" title="What they have done"></a>What they have done</h2><h3 id="4-in-1-problem-formulation"><a href="#4-in-1-problem-formulation" class="headerlink" title="4-in-1 problem formulation"></a>4-in-1 problem formulation</h3><p>First of all, the authors re-formulated 4 kinds of problems into one general problem:</p>
+<ol>
+<li>About generating litmus tests for one model.</li>
+<li>About comparing different models.</li>
+<li>About verified optimization or fence insertion – can strengthening a program ever introduce additional behaviors?<ul>
+<li>Such strengthening (refinement) is supposed to reduce behaviors just like “optimization”, isn’t it. No unprecedented behavior is expected.</li>
+</ul>
+</li>
+<li>About verified compilation on RMM.<ul>
+<li>Again, it’s introducing new behaviors during compilation, some behaviors that are disallowed in the source model, but permitted in the target model.</li>
+</ul>
+</li>
+</ol>
+<p>They formulate the new general problem as: <code>g(M, N, ▲)</code>.</p>
+<p>It basically says to find some litmus tests <code>(P, σ)</code> and <code>(Q, σ)</code>. Here <code>(P, σ)</code> is some litmus test with P being the program and σ being the final state to check observability. They should satisfy following properties.</p>
+<ol>
+<li><code>M |≠ (P, σ)</code>, the litmus test <code>(P, σ)</code> does not conform to M.</li>
+<li><code>N ⊨ (Q, σ)</code>, the litmus test <code>(Q, σ)</code> conforms to N.</li>
+<li><code>P ▲ Q</code>, two litmus test programs are connected in some relation ▲.</li>
+</ol>
+<p>// In the paper, the ▲ is actually some black triangle pointing to the right. But I didn’t know how to type that.. so I just picked a similar symbol ▲.</p>
+<p>Then the 4 kinds of problems are instantiations of this general problem.</p>
+<ol>
+<li><p>About generating litmus tests for one model</p>
+<ul>
+<li><code>g(M, ⊤, id)</code>, where ⊤ allows all executions and id is identity relation.</li>
+<li>i.e., Find those litmus tests that do not conform to M.</li>
+</ul>
+</li>
+<li><p>About comparing different models.</p>
+<ul>
+<li><code>g(M, N, id)</code>.</li>
+<li>i.e., Find those litmus tests that don’t conform to M but conform to N.</li>
+</ul>
+</li>
+<li><p>About verified optimization or fence insertion – can strengthening a program ever introduce additional behaviors?</p>
+<ul>
+<li><code>g(M, M, &#39;is weaker than&#39;)</code>.</li>
+<li>i.e., Find some programs that cannot reach some final state in M, but can do so after some strengthening.</li>
+</ul>
+</li>
+<li><p>About verified compilation on RMM.</p>
+<ul>
+<li><code>g(M, N, &#39;compiles to&#39;)</code>.</li>
+<li>i.e., Find some programs that cannot reach some final state in M, but its compiled program can do so on the real architecture N.</li>
+</ul>
+</li>
+</ol>
+<p>In their problem definition, to actually reason about the given two models, the definitions about M, N, and the relation ▲ must also be defined (e.g. in Fig. 11), in a way that is based on their Event / Execution hierarchy, a way that can easily encode and delegate to SAT solvers. We will see.</p>
+<h3 id="Solving-the-g-M-N-▲-problem"><a href="#Solving-the-g-M-N-▲-problem" class="headerlink" title="Solving the g(M, N, ▲) problem."></a>Solving the <code>g(M, N, ▲)</code> problem.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">M   ~~~~~  N</span><br><span class="line">↓          ↓</span><br><span class="line">P,σ ~~~~~ Q,σ</span><br><span class="line">↓↑         ↓↑</span><br><span class="line">X   ~~~~~  Y</span><br></pre></td></tr></table></figure>
+<p>The overall workflow, in my comprehension, can be illustrated as above.</p>
+<ol>
+<li>In order to reason about models M / N, try to find some witness litmus tests <code>(P, σ)</code> and <code>(Q, σ)</code>.</li>
+<li>But directly reasoning on the litmus test program level is intractable, so reduce the problem to execution level.</li>
+<li>First find some concrete satisfying executions X and Y.</li>
+<li>Then recover the litmus tests from concrete executions X and Y.</li>
+</ol>
+<p>I’ll explain these steps in more detail.</p>
+<h4 id="Reduce-from-Litmus-Test-level-to-Execution-level"><a href="#Reduce-from-Litmus-Test-level-to-Execution-level" class="headerlink" title="Reduce from Litmus Test level to Execution level"></a>Reduce from Litmus Test level to Execution level</h4><p>Because <code>g(M, N, ▲)</code> requires to find some <code>(P, σ)</code> that <em>must fail</em> on model M, it’s essentially asking to find <code>∀ executions . it fails</code>. This universal quantifier <code>∀</code> turns everything intractable.</p>
+<p>Their insight is to transform the litmus test level search problem into execution level search problem, and demonstrate that this becomes tractable. And reconstruct litmus test from executions later on.</p>
+<p>They want to search for two executions X and Y such that:</p>
+<ol>
+<li>Find execution X (corresponding to P) such that <code>M |≠ X</code></li>
+<li>Find execution Y (corresponding to Q) such that <code>N ⊨ Y</code></li>
+<li>X △ Y.</li>
+</ol>
+<p>// Again, in the paper the relation △ is some white triangle pointing to the right, and I don’t know how to type that..</p>
+<p>Note that there is no more σ at the moment, the final state of found execution X will be used as σ. And when reconstructing litmus tests it will need both X and Y to allow the same σ as final condition.</p>
+<p>But just these are not enough, obviously. Because this is finding just one execution X that fails on M. For the litmus test program P corresponding to X, it only means P may fail. To ensure that P <em>must fail</em>, they need to impose extra requirements – <code>X ∈ Dead_M</code>.</p>
+<p>The definition for <code>X ∈ Dead</code> basically says: any other execution corresponding to the same litmus test program P that is consistent with M will not reach final state. In other words, all those executions of P that reach this final state will be inconsistent with M. Hence derived “P must fail on M”.</p>
+<p>Above is the semantics definition, the authors presented some syntactic approximation later in the paper, for real-world implementation. It’s approximation, thus loses completeness, but still preserves soundness for up to 8 events according to them.</p>
+<p><em>Honestly however, I am not 100% sure why those rules would work and suffice. I’ll omit that part in this note..</em></p>
+<h4 id="SAT-solver-friendly"><a href="#SAT-solver-friendly" class="headerlink" title="SAT solver friendly"></a>SAT solver friendly</h4><p>They utilize SAT solvers for executions search. In my opinion, their framework for encoding is also worthy of mentioning.</p>
+<p>Executions, which I call execution traces sometimes or execution graphs, the latter one may be more accurate, are defined on top of Events, as usual.</p>
+<p>However, their events are some objects purely with an ID tag. You know they were usually defined to contain at least the following information altogether:</p>
+<ol>
+<li>which Thread</li>
+<li>action type: Read/Write/Fence/Lock/Unlock/etc.</li>
+<li>address</li>
+<li>value</li>
+<li>ID</li>
+<li>…</li>
+</ol>
+<p>But now in this paper, all those attached properties are represented as some set property. For example, <code>E ∈ ReadSet</code> means E is a Read event.</p>
+<p>There are several advantages, according to the authors. The most important reason in my opinion is that:</p>
+<ol>
+<li>The goal is to enable comparing different models. Different models could have different underlying event structures, by hardcoding them in some struct it’s hard to compare while by encoding as some set property it becomes easier, easier for SAT solvers.</li>
+</ol>
+<p>So,</p>
+<ul>
+<li>Events are defined upon set properties.</li>
+<li>Executions are defined based on Events.</li>
+<li>Memory model axioms are defined upon Executions &amp; Events.</li>
+</ul>
+<p>Essentially, everything is now friendly with set manipulation, therefore friendly with SAT solvers.</p>
+<h4 id="Recover-Litmus-Tests-from-Executions"><a href="#Recover-Litmus-Tests-from-Executions" class="headerlink" title="Recover Litmus Tests from Executions"></a>Recover Litmus Tests from Executions</h4><p>They first define a tiny DSL for litmus test programs. For the sake of simplicity, they also define some well-formedness property, e.g., different values for different WRITEs.</p>
+<p>Then the next (final) step is to recover litmus tests from the found executions. There is one inference rule in the paper (ξ3.2):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(X, Y) ∈ g&apos;(M, N, △)</span><br><span class="line">(P, σ) ∈ litmin(X)</span><br><span class="line">(Q, σ) ∈ lit(Y)</span><br><span class="line">P ▲ Q</span><br><span class="line">----------------------</span><br><span class="line">(P, Q, σ) ∈ g(M, N, ▲)</span><br></pre></td></tr></table></figure>
+<p>So the goal is to find some P / Q / σ such that:</p>
+<ol>
+<li><code>(P, σ) ∈ litmin(X)</code></li>
+<li><code>(Q, σ) ∈ lit(Y)</code></li>
+<li><code>P ▲ Q</code></li>
+</ol>
+<p>Their approach is to define some more abstract semantic predicate<br><code>lit&#39;(X, P, σ, disabled, failures)</code>. This is to connect the execution and the litmus test, semantically.</p>
+<ul>
+<li>X and <code>(P, σ)</code> are the input and output, respectively.</li>
+<li>“disabled” refers to those in P’s branching statements that are not executed because condition test leads to the other way.</li>
+<li>“failures” refers to those in P’s CAS instructions that are executed after CAS-failed.</li>
+</ul>
+<p><code>lit&#39;()</code> holds whenever there is a bijection μ between P and X, essentially, the instructions in P and events in X are all matched, one by one.</p>
+<p>Then <code>litmin()</code> and <code>lit()</code> are defined on top of <code>lit&#39;()</code>.</p>
+<ul>
+<li><code>lit()</code> is some instantiation of any disabled and failures.</li>
+<li><code>litmin()</code> is some instantiation of disabled and failures being ∅.</li>
+</ul>
+<p><code>litmin()</code> is used here for generation of P, while <code>lit()</code> is used for Q. I am not 100% certain about the reason of using a minimal for P, but I guess it’s due to the <code>P ▲ Q</code> requirement later on. Having weaker constraints may allow more space in searching of satisfying Q.</p>
+<p>As mentioned before, there is one last step, to ensure that X is the dead execution in the corresponding P. But that is not very clear to me yet, so I’d suggest you to read the original paper yourselves. They were able to check that the syntactic approximation ⊆ semantic deadness, for all executions with no more than 8 events.</p>
+<h2 id="Else"><a href="#Else" class="headerlink" title="Else"></a>Else</h2><p>Their feasibility demonstration examples are very impressive and convincing, they manage to replay many existing problem instances and discover new instances. Their tool can generate simpler litmus tests. I’ll omit all those for simplicity here.</p>
+<p>□</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2016/12/15/Herd-Lab/" data-toggle="tooltip" data-placement="top" title="Lab - Experiencing Memory Models using Herd7">← Previous Post</a></li><li class="next"><a href="/2016/09/30/你一定爱读的极简欧洲史/" data-toggle="tooltip" data-placement="top" title="你一定爱读的极简欧洲史">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>

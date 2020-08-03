@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Interesting Problem - Questions on Questions</h1><p class="post-meta">Posted on Jan 16, 2014 · <a href="/tags/EN/" class="tag post-meta">EN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>This is a very interesting problem, constraints are within problem descriptions XD. I thought there should be no solution that satisfies all constraints. But there indeed is..</p>
+<a id="more"></a>
+<p><br></p>
+<h1 id="Original-Problem"><a href="#Original-Problem" class="headerlink" title="Original Problem"></a>Original Problem</h1><p>I met this problem on a message on Wechat (only 4 options each), then I found a harder (maybe original) problem <a href="http://www.pg95.com/funny/IQ/question.html" target="_blank" rel="noopener">here</a>:</p>
+<pre><code>1. The first question that have answer (b) is:
+(a) 2, (b) 3, (c) 4, (d) 5, (e) 6
+
+2. The only continous questions that have the same answer are:
+(a) 2 &amp; 3, (b) 3 &amp; 4, (c) 4 &amp; 5, (d) 5 &amp; 6, (e) 6 &amp; 7
+
+3. The answer of this question is equal to the answer of which question?:
+(a) 1, (b) 2, (c) 4, (d) 7, (e) 6
+
+4. How many questions have the answer as (a)?
+(a) 0, (b) 1, (c) 2, (d) 3, (e) 4
+
+5. The answer of this question is equal to the answer of which question?:
+(a) 10, (b) 9, (c) 8, (d) 7, (e) 6
+
+6. The number of answer of (a) is equal to the number of which answer?:
+(a) b, (b) c, (c) d, (d) e, (e) none of the above
+
+7. The difference between the answer of this question and next question is:
+   (The difference between a &amp; b is 1)
+(a) 4, (b) 3, (c) 2, (d) 1, (e) 0
+
+8. How many answers are vowels (a,e)?
+(a) 2, (b) 3, (c) 4, (d) 5, (e) 6
+
+9. The number of answers that is non-vowels (b,c,d) is?:
+(a) prime number, (b) X!, (c) x^2, (d)x^3 , (e) 5x
+
+10.The answer of this question is:
+(a) a, (b) b, (c) c, (d) d, (e) e
+</code></pre><p>Interesting, huh!!</p>
+<p><strong>SPOILER ALERT</strong></p>
+<p>My solution and the official solution are listed below, do not “accidentally” see it if you want to give it a try!</p>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<h1 id="My-Solution"><a href="#My-Solution" class="headerlink" title="My Solution"></a>My Solution</h1><p>I assume you have tried by yourself or you are just eager to know my thoughts, so here is what I have done:</p>
+<ol>
+<li><p>Cut impossible options</p>
+<p>(b) in 1, (a) in 2, (a) in 4, (d) in 8, (e) in 9 are impossible options, see why?</p>
+<ul>
+<li><strong>(b) in 1</strong>: if 3 is (b), then 2 is (b), but (a) in 2 is also correct!</li>
+<li><strong>(a) in 2</strong>: if 2 is (a), then 3 is (a), then 1 is (a), then 2 is (b)!</li>
+<li><strong>(a) in 4</strong>: if 4 is (a), then there exists some (a)</li>
+<li><strong>(d) in 8</strong> &amp;&amp; <strong>(e) in (9)</strong>: list out 1 to 10, which can be prime or factorial or square or cube or 5divided?<br>If some number satisfies more than one option, it is definitely impossible. Otherwise, which option should we choose?<br>In this way, prime =&gt; 7, factorial =&gt; 6, square =&gt; 4, cube =&gt; 8.</li>
+</ul>
+</li>
+<li><p>My first thought was to use 3 and 5 as the key to solution. In my opinion, there should <strong>NEVER</strong> be any ambiguity.<br>In other words, if one option is selected as the answer for a question, all other options must be FALSE!<br>In this way, through 3 and 5 we can eliminate many impossible permutations.</p>
+<ul>
+<li>3:A, 5:any  –  failed</li>
+<li>3:B, 5:any  –  failed</li>
+<li>3:C, 5:A    –  failed</li>
+<li>3:C, 5:B    –  failed</li>
+<li>3:C, 5:C    –  failed  (D/E are impossible)</li>
+<li>3:D, 5:D    –  failed  (A/B/C/E are impossible)</li>
+<li>3:E, 5:E    (A/B/C/D are impossible, so this must be the answer! We are almost done!)<ul>
+<li>3:E, 5:E, 8:E   –  failed</li>
+<li>3:E, 5:E, 8:B   –  failed (only B/E is possible for 8)</li>
+</ul>
+</li>
+</ul>
+<p>Whaaaaat? all failed?! Below is what I got this when assigning 3:E, 5:E</p>
+<pre><code>1. The first question that have answer (b) is:
+(c) 4
+
+2. The only continous questions that have the same answer are:
+(d) 5 &amp; 6
+
+3. The answer of this question is equal to the answer of which question?:
+(e) 6
+
+4. How many questions have the answer as (a)?
+(b) 1
+
+5. The answer of this question is equal to the answer of which question?:
+(e) 6
+
+6. The number of answer of (a) is equal to the number of which answer?:
+(e) none of the above
+
+7. The difference between the answer of this question and next question is:
+   (The difference between a &amp; b is 1)
+(a) 4, (b) 3, (c) 2
+
+8. How many answers are vowels (a,e)?
+(b) 3, (e) 6
+
+9. The number of answers that is non-vowels (b,c,d) is?:
+(a) prime number =&gt; 7, (c) x^2 =&gt; 4
+
+10. The answer of this question is:
+(b) b, (c) c, (d) d, (e) e
+</code></pre></li>
+</ol>
+<h1 id="The-Solution"><a href="#The-Solution" class="headerlink" title="The Solution"></a>The Solution</h1><p>Here is that “solution”:</p>
+<pre><code>1. (c)
+2. (d)
+3. (e)
+4. (b)
+5. (e)
+6. (e)  // till 6, we have the same answer
+7. (d)  // but for 7, in my opinion, how can it be (d)?!
+        // If so, 5 can also choose (d), AMBIGUITY arises!!
+8. (c)
+9. (b)
+10.(a)
+</code></pre><p>In fact, my hypothesis that there should be no ambiguity may not be stable.<br>But I think everyone would agree that the problem will be better if there is indeed no ambiguity at all.</p>
+<p>I am still glad that I have solved most (is ≥60% “most”?) of it!!</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2014/06/01/清洁房间/" data-toggle="tooltip" data-placement="top" title="清洁房间">← Previous Post</a></li><li class="next"><a href="/2013/11/22/Initialize-a-brand-new-computer/" data-toggle="tooltip" data-placement="top" title="Initialize a brand new computer">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>

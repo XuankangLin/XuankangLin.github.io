@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>让代码告诉我按啥顺序背红宝书</h1><p class="post-meta">Posted on Feb 15, 2012 · <a href="/tags/CN/" class="tag post-meta">CN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>我不忍心再次提起GRE，痛！</p>
+<a id="more"></a>
+<p><br></p>
+<p>如果不知道“杨鹏17天搞定GRE单词”的话自行搜索去吧</p>
+<p>这程序还是存在bug的…比如说红宝书是52个list的时候，不管那么多了，我要开始背单词了！</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+//红宝书一共有51个list
+const int LIST_AMOUNT = 51;
+
+//速度按每天3个新list来计算，快慢可以调整
+const int LISTS_PER_DAY = 3;
+
+//学一轮要几天
+const int DAYS_PER_PASS = LIST_AMOUNT / LISTS_PER_DAY;
+
+int main()
+{
+    //预计将花在这几轮单词上的总天数
+    int total_days = DAYS_PER_PASS + 31;
+
+    //学习新lists，每天得学第几个片段
+    vector&lt;int&gt; new_list_indices(DAYS_PER_PASS);
+    for (int i=0;i&lt;DAYS_PER_PASS;i++)
+    {
+        new_list_indices[i] = i;
+    }
+
+    //复习lists，每天要复习哪几个片段
+    vector&lt;vector&lt;int&gt;&gt; todos(total_days);
+
+    for (int i=0;i&lt;DAYS_PER_PASS;i++)
+    {
+        int index = new_list_indices[i];
+
+        //当天复习
+        todos[i].push_back(index);
+
+        //1天后
+        todos[i+1].push_back(index);
+
+        //2天后
+        todos[i+2].push_back(index);
+
+        //4天后
+        todos[i+4].push_back(index);
+
+        //7天后
+        todos[i+7].push_back(index);
+
+        //15天后
+        todos[i+15].push_back(index);
+
+        //30天后
+        todos[i+30].push_back(index);
+    }
+
+    for (int i=0;i&lt;total_days;i++)
+    {
+        //先排下序，从小到大
+        sort(todos[i].begin(), todos[i].end());
+
+        cout &lt;&lt; &quot;D&quot; &lt;&lt; i+1 &lt;&lt; &quot;: &quot; &lt;&lt; endl;
+        if (i &lt; DAYS_PER_PASS)
+        {
+            cout &lt;&lt; &quot;    NEW    : &quot; &lt;&lt; new_list_indices[i] * LISTS_PER_DAY + 1 &lt;&lt; &quot;-&quot; &lt;&lt; (new_list_indices[i]+1) * LISTS_PER_DAY &lt;&lt; endl;
+        }
+
+        if (!todos[i].empty())
+        {
+            cout &lt;&lt; &quot;    REVIEW : &quot;;
+            for (vector&lt;int&gt;::iterator it=todos[i].begin();it!=todos[i].end();it++)
+            {
+                cout &lt;&lt; *it * LISTS_PER_DAY + 1 &lt;&lt; &quot;-&quot; &lt;&lt; (*it+1) * LISTS_PER_DAY &lt;&lt; &quot;  &quot;;
+            }
+            cout &lt;&lt; endl;
+        }
+
+        cout &lt;&lt; endl;
+    }
+
+    return 0;
+}
+</code></pre><hr>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>现在让我写应该会用Python去写吧… (2013/07/16)</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2012/03/16/网络生活中的时间控制----毛邓三拿免的“论文”/" data-toggle="tooltip" data-placement="top" title="网络生活中的时间控制 -- 毛邓三拿免的“论文”">← Previous Post</a></li><li class="next"><a href="/2012/01/30/南行漫记/" data-toggle="tooltip" data-placement="top" title="南行漫记">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>

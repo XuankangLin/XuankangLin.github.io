@@ -1,0 +1,14 @@
+C 2+2w
+{ [x] = 0; [y] = 0; }
+
+P0 (atomic_int* x, atomic_int* y) {
+  atomic_store_explicit(x, 2, memory_order_release);
+  atomic_store_explicit(y, 1, memory_order_release);
+}
+
+P1 (atomic_int* x, atomic_int* y) {
+  atomic_store_explicit(y, 2, memory_order_release);
+  atomic_store_explicit(x, 1, memory_order_release);
+}
+
+exists (x=2 /\ y=2)

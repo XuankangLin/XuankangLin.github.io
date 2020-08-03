@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="AndriyLin"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Android自动化试验记录</h1><p class="post-meta">Posted on Mar 3, 2016 · <a href="/tags/CN/" class="tag post-meta">CN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>我想要绕开微信自带浏览器对于Android系统分享的弱集成，一旦剪贴板里出现了一个链接，就自动添加到Pocket里，该怎么做呢？</p>
+<a id="more"></a>
+<p><br></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>这两天偶然发现<a href="https://play.google.com/store/apps/details?id=com.ideashower.readitlater.pro" target="_blank" rel="noopener">Pocket</a>可以朗读文本，这样可以把平时通勤的时间也利用起来，挺棒的。但是，微信内嵌的浏览器对于Android系统分享集成的很烂，要分享到Pocket的话，需要复制链接，然后进入Pocket app, 再点击添加。最烦的就是切换app的这个过程了。</p>
+<p>那么，自由度这么高的Android要怎么设置自动监听剪贴板的URL链接添加到Pocket呢？</p>
+<p>实测显示，Pocket能够自己判断分享过去的内容是不是URL, 对于无法添加的普通文字，它会报错的，所以我只要能做到自动“分享给Pocket”这一步就可以了。</p>
+<h2 id="Tech-Candidates"><a href="#Tech-Candidates" class="headerlink" title="Tech Candidates"></a>Tech Candidates</h2><h3 id="IFTTT"><a href="#IFTTT" class="headerlink" title="IFTTT"></a>IFTTT</h3><p>花了点时间把已经火过好一阵子的<a href="http://ifttt.com/" target="_blank" rel="noopener">IFTTT</a>仔细了解了下。概念确实挺棒的，我也发现了很多以前不了解的能够增加生产力的服务..</p>
+<ul>
+<li><p>我就此决定了弃用<a href="http://feedly.com/" target="_blank" rel="noopener">Feedly</a>, 启用<a href="http://www.inoreader.com/" target="_blank" rel="noopener">Inoreader</a>. 主要诱因就是Feedly要支持IFTTT居然还得收费.. 换成Inoreader之后就能设置每天收到一封daily digest, 显示昨天在RSS里关注的所有journal papers的更新了。^_^ 话说，不同RSS reader之间的用户黏性真低啊，毕竟迁移起来特别方便，只要导出导入OPML就可以了。</p>
+</li>
+<li><p>另外我也决定试试<a href="http://todoist.com" target="_blank" rel="noopener">Todoist</a>, 当前的<a href="https://www.omnigroup.com/omnifocus" target="_blank" rel="noopener">Omnifocus</a>于我并没有特别之处，还老贵.. 最常使用的桌面端快速录入快捷键发现Todoist也支持的。</p>
+</li>
+</ul>
+<p><br></p>
+<p>言归正传。</p>
+<p>但是，我并没有看到其Android Device channel中有提供clipboard相关的trigger. 难道为了这个小需求还需要自己创建一个channel不成？现有的东西毕竟还是太粗粒度了呀。所以我还是得另寻他法。</p>
+<p>此外，我感觉IFTTT最大的槽点是：这么多年了，居然仍旧连个propositional logic都不是！！讲真，我挺失望的。多个条件同时满足也做不到，满足之后的多个action相互配合也做不到，你就只能做那些浮于表面的事情了吗？比如说我想要一个定时的设定，IFTTT里有Date &amp; Time的channel, 但是里头指定的action channel是限死的，i.e. action channel里能访问到的变量只能来自于trigger channel, 在这里就是时间信息。我想要在这时候读Evernote的数据怎么办？做不到啊！（要是你知道怎样能完美设置的话，请一定要告诉我！拜谢 Orz）</p>
+<p>其实我就是想看看要设置一个「每天晚上写下第二天要做的事情，然后第二天一早自动提醒」的流程用不同工具该怎么操作。</p>
+<ul>
+<li><p>IFTTT下, 如上所述，IFTTT里没有提供这样延时的设定啊，怎么办呢？我看到了Email Digest channel, 会发每日总结邮件，这是IFTTT里唯一的延时类锦囊了吗？但是数据哪里来呢，我蛋疼地添加「一旦Evernote里某个文件夹下多了一个note, 就把它加到第二天的Email Digest里」，然后「一旦受到相关新邮件的话，就在手机上单独显示一个通知」（避免和其他邮件的通知并到一起去）。这样能行，第二天早上09:54我收到了daily digest邮件，里头是我昨晚写下的内容。</p>
+</li>
+<li><p>稍微方便一点的设置是将定时机制交给外部工具去做，比如说用<a href="http://www.boomeranggmail.com/" target="_blank" rel="noopener">Boomerang</a>定时发送邮件，然后一旦收到邮件就在手机上单独显示一个通知。实测可行。</p>
+</li>
+<li><p>而最方便的设置其实是，完全不用IFTTT.. 毕竟术业有专攻，<a href="https://keep.google.com/" target="_blank" rel="noopener">Google Keep</a>做这个就是设置一个reminder的事情！~_~</p>
+</li>
+</ul>
+<p>平胸而论，IFTTT在特定的场合挺有用的，比方说喜欢的妹子发了条状态，我立马就能收到提醒第一时间去点赞。但是.. 我喜欢的妹子她好像基本不在这些SNS上发东西.. [抠鼻] // 嗯你说啥？闭嘴！我才不是被屏蔽/拉黑了呢！</p>
+<h3 id="Tasker"><a href="#Tasker" class="headerlink" title="Tasker"></a>Tasker</h3><p>其实在仔细了解IFTTT之前我是先看了<a href="https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm" target="_blank" rel="noopener">Android Tasker</a>的，很早以前就用<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.paidtasks" target="_blank" rel="noopener">Google Opinion Rewards</a>回答问卷攒的钱入了这个app. 但是这次才开始真正了解，这里有一套“<a href="http://www.pocketables.com/tag/beginners-guide-to-tasker" target="_blank" rel="noopener">教程</a>”，我反正是看到一半就跑去了解IFTTT了.. 如果说IFTTT是漂亮的UI、不复杂的操作、简单的功能，那么Tasker就是反人类的UI、非程序员很难了解的操作、NB的功能！</p>
+<p>在IFTTT碰壁之后，我再次回到了Tasker的怀抱里来，毕竟，功能肯定是能做到的，但是具体怎么做呢？直接说结论吧：</p>
+<p>首先看Pocket的<a href="https://getpocket.com/developer/docs/authentication" target="_blank" rel="noopener">文档</a>，里头介绍了直接发一个“ACTION_SEND”就可以分享至Pocket:</p>
+<blockquote>
+<p>If your app already has sharing functionality using an Intent.ACTION_SEND action, with a text mimeType, then ‘Add to Pocket’ will automatically appear in the Share Via menu/chooser for any users that have Pocket installed.</p>
+</blockquote>
+<p>所以我要做的是发一个<a href="http://developer.android.com/reference/android/content/Intent.html" target="_blank" rel="noopener">Intent</a>给Pocket app, 具体在Tasker中的设置步骤是：</p>
+<ol>
+<li><p>添加一个PROFILE, Add → Event → Variables → Variable Set. 剪贴板的变化已经在系统变量中了，直接输入<code>%CLIP</code>或者直接在右边点开全部选项选取也可以。这里的<code>%CLIP</code>这样的全大写东西表示系统变量，值就是剪贴板的内容。这样设置就表示这个profile的触发条件为——当剪贴板内容变化时。</p>
+</li>
+<li><p>然后需要添加一个TASK, Add → System → Send Intent. 然后就是参照着<a href="http://forum.xda-developers.com/showthread.php?t=2489449" target="_blank" rel="noopener">这个帖子</a>里的2楼所介绍的关于分享到一个特定app的设置写法了：</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Send Intent [</span><br><span class="line">  Action:android.intent.action.SEND</span><br><span class="line">  Cat:Default</span><br><span class="line">  Mime Type:text/plain</span><br><span class="line">  Data:</span><br><span class="line">  Extra:android.intent.extra.TEXT: %CLIP</span><br><span class="line">  Extra:</span><br><span class="line">  Package:com.ideashower.readitlater.pro</span><br><span class="line">  Class:</span><br><span class="line">  Target:Activity</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p> 注意extra的内容要写<code>%CLIP</code>, 是发送的内容。然后package要写上Pocket自己的包名，这个我是从其在play store上的url里确认的：<a href="https://play.google.com/store/apps/details?id=com.ideashower.readitlater.pro" target="_blank" rel="noopener">https://play.google.com/store/apps/details?id=com.ideashower.readitlater.pro</a>说明它的包名就是<code>com.ideashower.readitlater.pro</code>.</p>
+</li>
+</ol>
+<p>我甚至写了个<a href="https://www.zhihu.com/question/31274215/answer/89067613" target="_blank" rel="noopener">知乎回答</a>..</p>
+<p>就是这样了！Tasker的UI真的真的是反人类，而且常驻通知栏导致的那个小图标要怎么去掉呢，强迫症表示不开心。<a href="https://play.google.com/store/apps/details?id=com.mobidia.android.mdm" target="_blank" rel="noopener">别人家的app</a>即使常驻通知栏也可以选择去掉这个头像的。</p>
+<h3 id="Clipboard-Actions"><a href="#Clipboard-Actions" class="headerlink" title="Clipboard Actions"></a>Clipboard Actions</h3><p>在全部设定完毕之后，我才发现了这么一个app——<a href="https://play.google.com/store/apps/details?id=de.halfreal.clipboardactions" target="_blank" rel="noopener">Clipboard Actions</a>. 好看！实用！几乎完美解决了我不离开当前app快速分享链接到Pocket的需求。</p>
+<p>那么我折腾个什么劲儿呢..？ <img src="黑人问号.jpg" alt="黑人问号.jpg"></p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2016/03/29/召唤新室友/" data-toggle="tooltip" data-placement="top" title="召唤16fall起的1至2名新室友！">← Previous Post</a></li><li class="next"><a href="/2016/03/02/VPS离线下载试验记录/" data-toggle="tooltip" data-placement="top" title="VPS离线下载试验记录">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://twitter.com/AndriyLin" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="https://www.instagram.com/verified_andriy/" title="Instagram"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-instagram"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li><li><a href="https://github.com/AndriyLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li></ul><p class="copyright text-muted">© AndriyLin • 2020
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', '[object Object]', 'auto');
+ga('send', 'pageview');</script></body></html>
