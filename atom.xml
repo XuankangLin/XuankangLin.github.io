@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://xuankanglin.com/"/>
-  <updated>2020-08-03T21:04:52.768Z</updated>
+  <updated>2020-09-15T04:14:10.439Z</updated>
   <id>http://xuankanglin.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>离线配置B站弹幕</title>
+    <link href="http://xuankanglin.com/2020/09/15/%E7%A6%BB%E7%BA%BF%E9%85%8D%E7%BD%AEB%E7%AB%99%E5%BC%B9%E5%B9%95/"/>
+    <id>http://xuankanglin.com/2020/09/15/离线配置B站弹幕/</id>
+    <published>2020-09-15T04:11:26.000Z</published>
+    <updated>2020-09-15T04:14:10.439Z</updated>
+    
+    <content type="html"><![CDATA[<p>优质弹幕真是极大极大地加成了观影体验！！</p><a id="more"></a><p>上周，我们在看B站前不久上线的《三国》时，因为吕布而联想到了楚云飞，继而想看看《亮剑》。可惜《亮剑》已经在B站下线了。这样的盛宴怎能没有B站的传统艺能——弹幕加持呢？！于是有了下边一番折腾。</p><ol><li>优酷上有《亮剑》的片源，但是优酷的弹幕氛围和B站根本不可同日而语。</li><li>搜索《亮剑》的B站弹幕下载，搜到了<a href="https://jump2.bdimg.com/p/5220546973?pid=109312029343&amp;cid=0#109312029343" target="_blank" rel="noopener">百度贴吧</a>里有人分享过17年缓存的弹幕，是XML格式的。豆瓣还有个人分享了swf格式的，那个根本不能用嘛。</li><li>用优酷app下载了《亮剑》视频，会员登录之后足以避开版权提示。</li><li>下载的视频是优酷自己的格式，根据<a href="https://zhuanlan.zhihu.com/p/111764932" target="_blank" rel="noopener">这里</a>的说法，用一个批处理文件<code>.bat</code>通过优酷自带的<code>ffmpeg</code>就能把视频转成mp4格式。</li><li>但是XML格式的弹幕还需要转化成ass格式才能在播放器中加载，找到了一个在线转换的<a href="https://tiansh.github.io/us-danmaku/bilibili/" target="_blank" rel="noopener">网站</a>。</li><li>现在总算能加载弹幕了，但是在PotPlayer上（我们客厅的配饭电脑装的是Windows）效果不是很好，字体有点奇怪，对于这个播放器按F5在参数→字幕→ASS字幕样式里选择仅使用字体名称来自定义。</li></ol><p>这样一套下来，总算是能看啦！</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;优质弹幕真是极大极大地加成了观影体验！！&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="什么是情怀" scheme="http://xuankanglin.com/categories/%E4%BB%80%E4%B9%88%E6%98%AF%E6%83%85%E6%80%80/"/>
+    
+    
+      <category term="CN" scheme="http://xuankanglin.com/tags/CN/"/>
+    
+  </entry>
   
   <entry>
     <title>午间夜话合辑20夏——动荡^2</title>
