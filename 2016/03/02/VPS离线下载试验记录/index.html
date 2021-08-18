@@ -1,6 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>VPS离线下载试验记录</h1><p class="post-meta">Posted on Mar 2, 2016 · <a href="/tags/CN/" class="tag post-meta">CN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>想下个东西，但是家里网络没速度，怎么办呢</p>
-<a id="more"></a>
-<p><br></p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><meta name="generator" content="Hexo 5.4.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>VPS离线下载试验记录</h1><p class="post-meta">Posted on Mar 2, 2016 · <a href="/tags/CN/" class="tag post-meta">CN</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>想下个东西，但是家里网络没速度，怎么办呢</p>
+<span id="more"></span>
+
+<br/>
+
 <p><strong>Disclaimer: 这篇博客只是记录了我寻找解决方案的整个过程，大家都是遵纪守法的好公民嘛，你要是用这个东西乱来，反正后果我是概不负责的。(ง •̀_•́)ง</strong></p>
 <p>// 以下试验环境在墙外，未测试过其它环境，反正当前的东西已经能够满足我自己的需求了。</p>
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>我已经很久很久没有下载大文件到本地另行存储的需求了，数据基本都在云端里静静地呆着。因此当我真的要下载某一个文件却怎么都下载不了、就连充了会员已经离线好都没有什么速度的时候，本宝宝很不开心！</p>
@@ -8,7 +10,7 @@
 <p>但是人怎么能让尿憋死？！刚过去的这个周末正好在帮助上初中的妹妹设置翻墙，发现去年暑假能用的ss + do的方案早已不能用了.. （最后据说好像用lantern效果还可以，不知道会“可以”多久）。不过正好提醒了我，也许我可以拿VPS做一个临时私人离线下载服务器呢！</p>
 <h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><h3 id="Which-VPS"><a href="#Which-VPS" class="headerlink" title="Which VPS"></a>Which VPS</h3><p>我们都是遵纪守法的好公民，当然要遵守各家VPS的Terms of Service啦！</p>
 <p>虽然我想要下载的那个文件已经在网盘上离线下载好了，应该已经不会再有P2P的需要了。我不太想直接在VPS上去下载，因为.. 因为我已经充了网盘的会员了啊.. [手动抠鼻]</p>
-<p>但是为了保险起见，我还是尽量挑了不禁止P2P的VPS供应商，谁知道以后会不会一不小心又需要了呢。而在Digital Ocean的<a href="https://www.digitalocean.com/legal/terms/" target="_blank" rel="noopener">ToS</a>里头明确写了：</p>
+<p>但是为了保险起见，我还是尽量挑了不禁止P2P的VPS供应商，谁知道以后会不会一不小心又需要了呢。而在Digital Ocean的<a target="_blank" rel="noopener" href="https://www.digitalocean.com/legal/terms/">ToS</a>里头明确写了：</p>
 <blockquote>
 <p>Subscribers of Grandfathered Accounts must NOT:</p>
 </blockquote>
@@ -21,11 +23,12 @@
 <blockquote>
 <p>Failure of Subscribers of Grandfathered Accounts to follow these terms will result in the revocation of their Accounts’ grandfathered status.</p>
 </blockquote>
-<p>我对Digital Ocean一直挺有好感的的，从Github的<a href="https://education.github.com/pack" target="_blank" rel="noopener">学生大礼包</a>可以拿DO的$100 credit（诶，现在好像只有50刀了..），我在他家的使用体验一直很棒！</p>
-<p>特别是去年秋天，当时在上计算机网络，课程项目需要使用<a href="https://github.com/mininet/mininet" target="_blank" rel="noopener">Mininet</a>来测试评估不同网络条件下不同topology的性能差异。一只妹子本机上的环境配置一直不成功，于是我干脆帮她在DO上搭了个测试环境 :) 实测效果还挺好~ 只不过因为我设置的密码太简单，第二天收到邮件说检测到异常网络情况，半夜里往中国发了好多SYN包（SYN flood!!)。在后续停用、恢复数据的过程中，客服的表现让我很满意呐！</p>
+<p>我对Digital Ocean一直挺有好感的的，从Github的<a target="_blank" rel="noopener" href="https://education.github.com/pack">学生大礼包</a>可以拿DO的$100 credit（诶，现在好像只有50刀了..），我在他家的使用体验一直很棒！</p>
+<p>特别是去年秋天，当时在上计算机网络，课程项目需要使用<a target="_blank" rel="noopener" href="https://github.com/mininet/mininet">Mininet</a>来测试评估不同网络条件下不同topology的性能差异。一只妹子本机上的环境配置一直不成功，于是我干脆帮她在DO上搭了个测试环境 :) 实测效果还挺好~ 只不过因为我设置的密码太简单，第二天收到邮件说检测到异常网络情况，半夜里往中国发了好多SYN包（SYN flood!!)。在后续停用、恢复数据的过程中，客服的表现让我很满意呐！</p>
 <p>不过既然你家不许用这些，那我就不叨扰了。</p>
-<p><br></p>
-<p>然后，我看到在Linode的<a href="https://www.linode.com/tos" target="_blank" rel="noopener">ToS</a>中好像要求会松一点：</p>
+<br/>
+
+<p>然后，我看到在Linode的<a target="_blank" rel="noopener" href="https://www.linode.com/tos">ToS</a>中好像要求会松一点：</p>
 <blockquote>
 <p>Linode does not prohibit the use of distributed, peer to peer network services such as Tor, nor does Linode routinely monitor the network communications of customer Linodes as a normal business practice.</p>
 </blockquote>
@@ -42,22 +45,23 @@
 <li>从VPS下载到本地</li>
 </ol>
 <p>后者随便scp啥的都能做，就不管了。第一步是在VPS下操作，所以我得先去找找命令行下有什么工具能够自动从网盘下载。</p>
-<p>我先去找了找这些个网盘有没有放出命令行API, 您别说，还真有！<a href="https://github.com/houtianze/bypy" target="_blank" rel="noopener">bypy</a>: 这是百度云的Python客户端（应该不是官方的吧？），截止到今天已经有1598个星了，很活跃的样子！文档也已经比较完善了。关于如何使用这个bypy的样例/解说，也许可以参考<a href="http://www.typemylife.com/use-vps-download-videos-from-youtube-upload-to-baidu-cloud/" target="_blank" rel="noopener">这篇博文</a>。</p>
+<p>我先去找了找这些个网盘有没有放出命令行API, 您别说，还真有！<a target="_blank" rel="noopener" href="https://github.com/houtianze/bypy">bypy</a>: 这是百度云的Python客户端（应该不是官方的吧？），截止到今天已经有1598个星了，很活跃的样子！文档也已经比较完善了。关于如何使用这个bypy的样例/解说，也许可以参考<a target="_blank" rel="noopener" href="http://www.typemylife.com/use-vps-download-videos-from-youtube-upload-to-baidu-cloud/">这篇博文</a>。</p>
 <p>但是！我并没有看到115能用的命令行API, 似乎其曾经有过一个官方的Linux (Ubuntu)客户端(beta?), 但是现在好像没有了.. 在Github上搜索相关项目如下（截至目前只找到这么几个显著相关的，没有其它的了）：</p>
 <ul>
-<li><p><a href="https://github.com/shichao-an/115wangpan" target="_blank" rel="noopener">这个</a>：是个非官方的Python API库，文档也很详尽的，应该是和bypy一样的效果，但是！其显示已经Deprecated了.. 就是因为官方现在收紧了登录策略，只能通过自家浏览器和移动端登录了.. 真是坑啊 →_→</p>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/shichao-an/115wangpan">这个</a>：是个非官方的Python API库，文档也很详尽的，应该是和bypy一样的效果，但是！其显示已经Deprecated了.. 就是因为官方现在收紧了登录策略，只能通过自家浏览器和移动端登录了.. 真是坑啊 →_→</p>
 </li>
-<li><p><a href="https://github.com/coolzilj/lixian-115" target="_blank" rel="noopener">这个</a>：似乎就是命令行批量添加种子/磁链到离线下载，并没有我想要的下载出来的效果。不过这个repo有启发的地方在于：推荐了使用EditThisCookie插件导出cookies, 即可正常使用新115登录方式。不过每次都要导出一下cookie就是了..</p>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/coolzilj/lixian-115">这个</a>：似乎就是命令行批量添加种子/磁链到离线下载，并没有我想要的下载出来的效果。不过这个repo有启发的地方在于：推荐了使用EditThisCookie插件导出cookies, 即可正常使用新115登录方式。不过每次都要导出一下cookie就是了..</p>
 </li>
-<li><p><a href="https://github.com/mengskysama/115-Lixian-API" target="_blank" rel="noopener">这个</a>：和上边的一样，似乎都注重的是用API操作真正的网盘，而非下载东西到本地，所以并不是我想要的。</p>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/mengskysama/115-Lixian-API">这个</a>：和上边的一样，似乎都注重的是用API操作真正的网盘，而非下载东西到本地，所以并不是我想要的。</p>
 </li>
-<li><p>最重要的东西放到最后说！<a href="https://github.com/acgotaku/115" target="_blank" rel="noopener">这个</a>：是一个浏览器插件，能够导出Aria2 RPC下载！最终结果表明，这个就是我想要的东西了！！话说同一个作者也有<a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="noopener">百度网盘的版本</a>。他还写过扇贝网的插件！天呐，我想起了曾经每天刷单词的时光 ◑ω◑</p>
+<li><p>最重要的东西放到最后说！<a target="_blank" rel="noopener" href="https://github.com/acgotaku/115">这个</a>：是一个浏览器插件，能够导出Aria2 RPC下载！最终结果表明，这个就是我想要的东西了！！话说同一个作者也有<a target="_blank" rel="noopener" href="https://github.com/acgotaku/BaiduExporter">百度网盘的版本</a>。他还写过扇贝网的插件！天呐，我想起了曾经每天刷单词的时光 ◑ω◑</p>
 </li>
 </ul>
-<p><br></p>
-<p>我搜了下，<a href="https://aria2.github.io/" target="_blank" rel="noopener">Aria2</a>是Linux下的很常用的下载套件，大部分方式都支持！它的一大特性就是提供RPC模式，就像是为这个远程服务器离线下载专门设计的一样！Aria2还有个<a href="https://binux.github.io/yaaw/" target="_blank" rel="noopener">YAAW</a>的工具，提供了Aria2的GUI管理界面！能够达到的效果是——我访问VPS上的YAAW界面，发出特定指令，VPS上的Aria2工具就会自动从指定的地方下载文件，YAAW界面还会定时更新进度、速度等等，所以远端服务器真真正正变成了一个下载器了！我猜想那些智能路由要自动下载的话应该也是类似的做法的吧？</p>
+<br/>
+
+<p>我搜了下，<a target="_blank" rel="noopener" href="https://aria2.github.io/">Aria2</a>是Linux下的很常用的下载套件，大部分方式都支持！它的一大特性就是提供RPC模式，就像是为这个远程服务器离线下载专门设计的一样！Aria2还有个<a target="_blank" rel="noopener" href="https://binux.github.io/yaaw/">YAAW</a>的工具，提供了Aria2的GUI管理界面！能够达到的效果是——我访问VPS上的YAAW界面，发出特定指令，VPS上的Aria2工具就会自动从指定的地方下载文件，YAAW界面还会定时更新进度、速度等等，所以远端服务器真真正正变成了一个下载器了！我猜想那些智能路由要自动下载的话应该也是类似的做法的吧？</p>
 <p>在加上Aria2的关键字后，临时私用离线下载服务器的相关搜索结果一下就多了很多了，原来是我之前太孤陋寡闻呐~ 不过大约几年前的版本基本都说的是拿到一个链接，然后在terminal里手动输入这个链接下载，看来RPC模式是比较后来才添加的咯？</p>
-<p>随手搜到的比较有干货的博文可以看<a href="https://blog.icehoney.me/posts/2015-01-31-Aria2-download" target="_blank" rel="noopener">这里</a>，其实就是上边俩插件作者的科普博文！后边写Aria2的设置文件可以参考这里。</p>
+<p>随手搜到的比较有干货的博文可以看<a target="_blank" rel="noopener" href="https://blog.icehoney.me/posts/2015-01-31-Aria2-download">这里</a>，其实就是上边俩插件作者的科普博文！后边写Aria2的设置文件可以参考这里。</p>
 <h2 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h2><p>工具找好之后，离全部搭建起来只有一步之遥了。最终效果描述如下：</p>
 <ol>
 <li>在网盘里，点击导出到RPC下载，我的VPS就会自动开始下载。</li>
@@ -68,13 +72,13 @@
 <ol>
 <li><p>在Linode上新建一个node, 我就挑了个最便宜的，Ubuntu系统，一个月5刀，还可以接受，不过似乎没法暂时suspend等之后要用的时候再启用..</p>
 </li>
-<li><p>建好VPS之后，看看比如说<a href="https://mozillazg.com/2013/01/linux-vps-first-things-need-to-do.html" target="_blank" rel="noopener">这篇博文</a>，做一些安全方面的设置，上次在Digital Ocean被compromise的事情还历历在目啊。</p>
+<li><p>建好VPS之后，看看比如说<a target="_blank" rel="noopener" href="https://mozillazg.com/2013/01/linux-vps-first-things-need-to-do.html">这篇博文</a>，做一些安全方面的设置，上次在Digital Ocean被compromise的事情还历历在目啊。</p>
 </li>
 <li><p>VPS上设置好环境，安装好我常用的几个工具。</p>
 </li>
 <li><p>安装Aria2. Aria2需要写配置文件，就放在<code>~/.aria2/</code>下吧，这是默认的放置路径。这个文件夹下需要建立2个文件，</p>
 <ul>
-<li><p>aria2.conf: 具体的设置文件，配置怎么写可以参考<a href="https://blog.icehoney.me/posts/2015-01-31-Aria2-download" target="_blank" rel="noopener">插件作者的科普</a>, 随手搜到的<a href="http://aria2c.com/usage.html" target="_blank" rel="noopener">博文</a>, 还有<a href="https://aria2.github.io/manual/en/html/aria2c.html" target="_blank" rel="noopener">官方文档</a>。关于aria2.conf, 有几个东西特别要改：</p>
+<li><p>aria2.conf: 具体的设置文件，配置怎么写可以参考<a target="_blank" rel="noopener" href="https://blog.icehoney.me/posts/2015-01-31-Aria2-download">插件作者的科普</a>, 随手搜到的<a target="_blank" rel="noopener" href="http://aria2c.com/usage.html">博文</a>, 还有<a target="_blank" rel="noopener" href="https://aria2.github.io/manual/en/html/aria2c.html">官方文档</a>。关于aria2.conf, 有几个东西特别要改：</p>
 <ul>
 <li>enable-rpc: 一定要设置成true, 这样才能在后台运行着听取我们通过IP地址访问的YAAW下命令。</li>
 <li>rpc-user / rpc-passwd / rpc-token: 我是在ubuntu上apt-get安装的，但是好像默认的版本是1.18?? 所以我试了好多次token都不行，文档是1.20的.. 最后还是设置了user/passwd. 不设置这些的话，就相当于谁只要能访问这个IP地址就能够下命令了！</li>
@@ -86,13 +90,13 @@
 </li>
 </ul>
 </li>
-<li><p>git clone <a href="https://github.com/binux/yaaw" target="_blank" rel="noopener">YAAW</a>到VPS上的随便哪个文件夹下。</p>
+<li><p>git clone <a target="_blank" rel="noopener" href="https://github.com/binux/yaaw">YAAW</a>到VPS上的随便哪个文件夹下。</p>
 </li>
-<li><p>安装Nginx. 具体的安装过程我是参考着<a href="http://macshuo.com/?p=547" target="_blank" rel="noopener">池老师的博客</a>来做的。也照着里头说的去设置一下开机启动Nginx.</p>
+<li><p>安装Nginx. 具体的安装过程我是参考着<a target="_blank" rel="noopener" href="http://macshuo.com/?p=547">池老师的博客</a>来做的。也照着里头说的去设置一下开机启动Nginx.</p>
 <p> 然后还需要修改Nginx的设置文件，使得我们能从公网IP直接访问到YAAW所在的那个文件夹。我以前没用过Nginx, 搜了下，应该是需要去改<code>/etc/nginx/sites-available/default</code>这个配置文件，默认使用的就是default. 把里头root后边的选项设置成自己的YAAW所在的路径就好了。然后reload一下Nginx就可以了。可以在本机浏览器上用IP地址测试能否访问的到。</p>
 <p> 本机浏览器 -&gt; 访问IP -&gt; Nginx映射到YAAW文件夹 -&gt; YAAW操作VPS上的aria2c工具。这么一套流程我觉得超棒的！！</p>
 </li>
-<li><p>安装<a href="https://chrome.google.com/webstore/detail/baiduexporter/mjaenbjdjmgolhoafkohbhhbaiedbkno" target="_blank" rel="noopener">百度网盘助手</a>/<a href="https://chrome.google.com/webstore/detail/115exporter/ojafklbojgenkohhdgdjeaepnbjffdjf" target="_blank" rel="noopener">115网盘助手</a>，前者的设置就在导出RPC的下来菜单那里，后者的设置页面在个人信息那里点开来，后者没看其github项目主页的话我是肯定找不到的.. Chrome webstore里还有人因为找不到这个给了1星差评 = =</p>
+<li><p>安装<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/baiduexporter/mjaenbjdjmgolhoafkohbhhbaiedbkno">百度网盘助手</a>/<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/115exporter/ojafklbojgenkohhdgdjeaepnbjffdjf">115网盘助手</a>，前者的设置就在导出RPC的下来菜单那里，后者的设置页面在个人信息那里点开来，后者没看其github项目主页的话我是肯定找不到的.. Chrome webstore里还有人因为找不到这个给了1星差评 = =</p>
 <p> 两个插件设置大同小异，和YAAW页面里的设置也基本都一样。最重要就是那个JSON-RPC-path, 这个在YAAW的主页里有介绍，需要写成这个格式：<code>http://myusername:mypasswd@123.456.789.123:listenport/jsonrpc</code>.</p>
 <p> 俩插件都提供了验证是否连接成功的选项，只要上边这个路径设置正确，应该是会连接成功并显示VPS上Aria2的版本号的。</p>
 </li>
@@ -101,7 +105,7 @@
 </ol>
 <h2 id="Conclusion-amp-Future-Work"><a href="#Conclusion-amp-Future-Work" class="headerlink" title="Conclusion &amp; Future Work"></a>Conclusion &amp; Future Work</h2><p>整个东西其实并没有什么技术含量，只是把几个已有的工具拼接起来而已，源码都不用改，写几行配置文件的事情.. 但是正因如此，才展示了现有工具链的强大啊！</p>
 <p>VPS还可以做很多事情呢，也许还可以用它去自动去爬小说的更新什么的，咳咳咳..</p>
-</article><ul class="pager blog-pager"><li class="previous"><a href="/2016/03/03/Android自动化试验记录/" data-toggle="tooltip" data-placement="top" title="Android自动化试验记录">← Previous Post</a></li><li class="next"><a href="/2016/02/13/岛上书店/" data-toggle="tooltip" data-placement="top" title="岛上书店">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2016/03/03/Android%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%95%E9%AA%8C%E8%AE%B0%E5%BD%95/" data-toggle="tooltip" data-placement="top" title="Android自动化试验记录">← Previous Post</a></li><li class="next"><a href="/2016/02/13/%E5%B2%9B%E4%B8%8A%E4%B9%A6%E5%BA%97/" data-toggle="tooltip" data-placement="top" title="岛上书店">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
 var disqus_url = url_parts[0];
 (function () {
     console.log("enter disqus");
@@ -110,9 +114,9 @@ var disqus_url = url_parts[0];
     dsq.async = true;
     dsq.src = "//andriylin-blog.disqus.com/embed.js";
     (document.head || d.body ).appendChild(dsq);
-})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a href="https://www.linkedin.com/in/xuankanglin/" title="LinkedIn"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-linkedin"></i></span></a></li><li><a href="https://github.com/XuankangLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li></ul><p class="copyright text-muted">© gungunba • 2021
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/xuankanglin/" title="LinkedIn"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-linkedin"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://github.com/XuankangLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li></ul><p class="copyright text-muted">© gungunba • 2021
 </p><p class="theme-by text-muted">Theme by
-<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
+<a target="_blank" rel="noopener" href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function (i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
     i[r] = i[r] || function () {
                 (i[r].q = i[r].q || []).push(arguments)
