@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xuankanglin.com/2021/10/26/%E5%8D%88%E9%97%B4%E5%A4%9C%E8%AF%9D%E5%90%88%E8%BE%9121%E7%A7%8B/</loc>
+    
+    <lastmod>2021-10-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xuankanglin.com/2021/08/18/%E5%8D%88%E9%97%B4%E5%A4%9C%E8%AF%9D%E5%90%88%E8%BE%9121%E5%A4%8F/</loc>
     
     <lastmod>2021-08-20</lastmod>
@@ -830,7 +837,7 @@
 
   <url>
     <loc>http://xuankanglin.com/</loc>
-    <lastmod>2021-08-20</lastmod>
+    <lastmod>2021-10-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
