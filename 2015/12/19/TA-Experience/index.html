@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><meta name="generator" content="Hexo 5.4.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>TA Experience</h1><p class="post-meta">Posted on Dec 20, 2015</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>Due to various reasons, I am a TA for <em><a target="_blank" rel="noopener" href="https://www.cs.purdue.edu/homes/cs503/">CS503 Operating Systems</a></em> in 15fall. I’ve learned a lot in this procedure, but it is VERY VERY time-consuming!</p>
+<span id="more"></span>
+
+<br/>
+
+<p>Although this is my first time being a TA, either in undergrad or graduate school, I feel I’ve done a not-bad job. Hopefully I am not the only one to think so. :D</p>
+<h2 id="Things-I-am-proud-of"><a href="#Things-I-am-proud-of" class="headerlink" title="Things I am proud of"></a>Things I am proud of</h2><ol>
+<li><p>After weeks of PSO sessions, now I can finally confirm that my English is more than sufficient for class scenarios. :D And I did give some useful guidance to students’ questions!</p>
+</li>
+<li><p>I redesigned the handout web page for each lab I prepared. Now it’s “adaptive” to some extent.</p>
+<p> Because I just cannot stand texts in a web page stretching to its full width all the time!! (See my shaking head there in front of a big screen?) And this was easy, just a few lines of CSS.</p>
+</li>
+<li><p>I prepared Lab2-Lab5, delivering a handout, a code base, as well as a master solution for each!</p>
+<p> When I was taking the course, I’ve done similar labs then. So I am not doing all labs from scratch. Otherwise I doubt if I’d have time making a solution tar ball for each lab.</p>
+</li>
+<li><p>I replied almost all piazza questions with respect to labs.</p>
+<p> // I feel piazza is sometimes like the supreme court, where students raise questions just for clarification, whether something is allowed / will be punished..</p>
+</li>
+<li><p>I automate the grading process, using my written scripts and test cases. Here I want to thank <a target="_blank" rel="noopener" href="http://weichiu.com/about-wei-chiu/">Wei-Chiu Chuang</a>, Bo Sang, Shouyu Luo, and other previous semesters’ TAs for their helps. Wei-chiu is my TA when I was taking the course. He shared his scripts with me, upon which I build my own scripts. Part of the test cases I’ve integrated are from previous semesters, I’ve also designed a bunch new cases myself.</p>
+</li>
+</ol>
+<br/>
+
+<p>Some side notes for such scripts:</p>
+<ul>
+<li><p>I’ve seen quite a few versions of scripts. Perl version, Python version, shell version, etc. The core of all these is to use “Expect” to interact with XINU back-end in command line. (Run <code>man expect</code> to know more)</p>
+</li>
+<li><p>I’ve modified the shell version of expect setting file, to make it automatically stop after no output for 10 seconds (configurable). The old version I saw just stops after, say, 1 minute.</p>
+</li>
+<li><p>All the rest are fully up to the programmer. My scripts are in shell, and can uncompress / grab submitted PDFs / inject test cases / build and run automatically / restore all files automatically.</p>
+</li>
+<li><p>The scripts and solutions should be available somewhere under /u/u3/cs503/ (i.e. /homes/cs503/)</p>
+</li>
+</ul>
+<h2 id="Some-lessons"><a href="#Some-lessons" class="headerlink" title="Some lessons"></a>Some lessons</h2><ol>
+<li><p>There are valuable resources in the cs503 directory on department servers!</p>
+<p> There was a script to set ACL permissions for each student to only access their own grades/feedbacks. But I didn’t see it until 2nd lab or so.. Hence, we just generate texts for each student, and post it on blackboard’s grade feedback.</p>
+</li>
+<li><p>I also learned to set up the “turnin” system for code submission. And use crontab to turn off submission after deadline. We asked student to send late submission to us via email.</p>
+<p> But next time, probably I could set something like lab1, lab1late1, lab1late2, lab1late3, in which lab1late3 means submitting using 3 late days. (thus no need to collect by email, or check <code>ls -tl</code> to see submission time)</p>
+</li>
+<li><p>Always put everything student must know into a single handout file!</p>
+<p> In Lab2-B, I put some part in TA-notes, assuming students will read that web page as well. It turns out some student complained and requested for full credit stating that they didn’t see this requirement in the main handout. We gave in..</p>
+</li>
+<li><p>Make a Piazza post, and sometimes send email notification to students, if necessary.</p>
+<p> Students will complain if they lost points because they didn’t see some clarifications in piazza follow-ups..</p>
+</li>
+<li><p>State API requirements EXPLICITLY! In Lab3, we didn’t unite the declaration for one variable. Eventually in grading, we have to manually look into student’s submission to see how they defined this. It costs much much more time!</p>
+</li>
+<li><p>Automate if you can. Provide some sample/simple test cases.</p>
+<p> I sometimes feel sorry for student if they failed to pass any test case.. Providing a sample test case should be helpful. Also, maybe the points distribution could be revised to be more fine-grained.</p>
+</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p><del>If no further changes,</del> I’ll be a TA for <del><em>CS240 C Programming</em></del> <ins><a target="_blank" rel="noopener" href="https://www.cs.purdue.edu/homes/ravi17/">CS505 Distributed Systems</a></ins> in 16spring.</p>
+<p>Honestly, it took me a lot of time to prepare labs, set up the environment, grading, etc. I absolutely wish to have more time on my own research if possible T_T.</p>
+<p>For such a course notorious for its high workload, I have expected it to be very time–consuming in all lab preparations / gradings. But it’s still even more so than I expected..</p>
+<p>At the end, thanks to Dr. Payer and Shuvra for all the work in this semester! I am glad to work with them!</p>
+<p>This concludes this semester. I truly wish I could have more time on my own research in next semester, provided that I’ve confirmed the right direction to pursue. T_T</p>
+</article><ul class="pager blog-pager"><li class="previous"><a href="/2015/12/21/%E7%BD%97%E9%A9%AC%E4%BA%BA%E7%9A%84%E6%95%85%E4%BA%8B11-15/" data-toggle="tooltip" data-placement="top" title="罗马人的故事11-15">← Previous Post</a></li><li class="next"><a href="/2015/12/15/Nexus-6P-5X-%E4%BD%BF%E7%94%A8%E4%BD%93%E9%AA%8C/" data-toggle="tooltip" data-placement="top" title="Nexus 6P/5X 使用体验">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
+var disqus_url = url_parts[0];
+(function () {
+    console.log("enter disqus");
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = "//andriylin-blog.disqus.com/embed.js";
+    (document.head || d.body ).appendChild(dsq);
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/xuankanglin/" title="LinkedIn"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-linkedin"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://github.com/XuankangLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://weibo.com/andriylin/" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li></ul><p class="copyright text-muted">© gungunba • 2022
+</p><p class="theme-by text-muted">Theme by
+<a target="_blank" rel="noopener" href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-42282594-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'UA-42282594-1');</script></body></html>
