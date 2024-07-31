@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://xuankanglin.com/"/>
-  <updated>2023-01-26T17:33:03.323Z</updated>
+  <updated>2024-07-31T00:02:19.348Z</updated>
   <id>http://xuankanglin.com/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>播客回归文字</title>
+    <link href="http://xuankanglin.com/2024/07/30/speech-to-text/"/>
+    <id>http://xuankanglin.com/2024/07/30/speech-to-text/</id>
+    <published>2024-07-30T20:30:00.000Z</published>
+    <updated>2024-07-31T00:02:19.348Z</updated>
+    
+    <content type="html"><![CDATA[<p>“听不完，根本听不完！”</p><span id="more"></span><p>——我在《纵横四海》评论区经常看到这样的回复😂。作为久负盛名的超长播客，主播单口能讲好几个小时的能力固然令人佩服，超长的信息量会给像我这样的听众带来巨大的 FOMO 压力，直到最终完全放弃。</p><p>内容是看不完、听不完、刷不完的！虽说“进一寸有一寸的欢喜”，但真要讲究追求信息的效率，可以回到文字本身嘛。在听的层面，保留跳过、不听完的权利，兴趣收听就该是怡然自得的状态！</p><p>于是我试了下，发现现在从音频转文字的流程已经很成熟了。反过来从文字到音频也已经很好了，我这两天尝试听微信读书的AI朗读，最新的语音包很流利，再没有前几年的那种时不时错误断句、错误多音字、听久了会头晕的机械感。</p><h2 id="播客转文字的流程"><a href="#播客转文字的流程" class="headerlink" title="播客转文字的流程"></a>播客转文字的流程</h2><ol><li><p>下载音频文件</p><ul><li>我用桌面端的 <a href="https://support.pocketcasts.com/knowledge-base/apps/">Pocket Casts</a> app 可以下载音频文件。播客背后使用的还是古典的 RSS 订阅，源文件都能下载得到，真好。<img src="pocket-casts.jpg"></li></ul></li><li><p>转录逐字稿</p><ul><li>宇宙大厂提供的福利——<a href="https://www.larksuite.com/hc/zh-CN/articles/360048488195-%E4%BD%BF%E7%94%A8-lark-%E5%A6%99%E8%AE%B0">飞书妙记</a>就能自动针对上传的音频文件生成逐字稿，其本意是为了生成会议纪要，但用在这里恰如其分，还能自动区分不同说话人，转换的质量也够看，甚至可以点击词语跳转到对应的时间戳，还要什么自行车？<img src="lark.jpg"></li><li>我用的是海外版 lark，个人用免费，不过在手机app上不知道怎么的，没有找到妙记的入口，没法上传，但是可以从转录完成的消息页面点开进入具体的某一期。网页端倒是可以直接登录，进妙记的首页就可以上传音频文件，上传之后自动转录，大概只花20+分钟就能看到转录完成的稿件，很满意。</li></ul></li><li><p>按需精炼总结</p><ul><li>妙记可以导出转录的逐字稿，之后就可以按需丢给 ChatGPT 之类的大模型进一步处理，具体要总结还是转译还是咋地就取决于丢给大模型什么指令了。<img src="chatgpt.jpg"></li></ul></li></ol><h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><p>这样一个流程还是有几个不足：</p><ol><li>自动化。目前这些步骤都是手动的，个人私用是够了，但若是有更多需要处理的内容，就需要考虑利用 API 自动化了。</li><li>不准确。从上边的截图可以看出，有不少转换得到的文字还有纰漏，人阅读没问题，特别是可以点击到对应的时间节点直接人工校验说的到底是啥。但要传递给上下游应用的话就相当于出了偏差的报道，是要负责的。还是需要更多的上下文背景信息。</li><li>没有什么护城河。毕竟这就只是个纯应用。想来最合适做这件事情的人还是小宇宙app自己，毕竟小宇宙能拿到多的多得多的上下文信息，而且只需要生成一次。但自由度方面肯定还是这样可以完全定制化的流程更能符合各自的需求。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;“听不完，根本听不完！”&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>2022年度总结分享推荐</title>
