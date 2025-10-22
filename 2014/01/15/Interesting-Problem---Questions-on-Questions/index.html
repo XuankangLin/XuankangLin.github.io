@@ -1,4 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><meta name="generator" content="Hexo 6.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Interesting Problem - Questions on Questions</h1><p class="post-meta">Posted on Jan 16, 2014</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>This is a very interesting problem, constraints are within problem descriptions XD. I thought there should be no solution that satisfies all constraints. But there indeed is..</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Interesting Problem - Questions on Questions</h1><p class="post-meta">Posted on Jan 16, 2014</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>This is a very interesting problem, constraints are within problem descriptions XD. I thought there should be no solution that satisfies all constraints. But there indeed is..</p>
 <span id="more"></span>
 
 <br/>
@@ -78,59 +82,59 @@
 <h1 id="My-Solution"><a href="#My-Solution" class="headerlink" title="My Solution"></a>My Solution</h1><p>I assume you have tried by yourself or you are just eager to know my thoughts, so here is what I have done:</p>
 <ol>
 <li><p>Cut impossible options</p>
-<p> (b) in 1, (a) in 2, (a) in 4, (d) in 8, (e) in 9 are impossible options, see why?</p>
+<p>(b) in 1, (a) in 2, (a) in 4, (d) in 8, (e) in 9 are impossible options, see why?</p>
 <ul>
-<li>  <strong>(b) in 1</strong>: if 3 is (b), then 2 is (b), but (a) in 2 is also correct!</li>
-<li>  <strong>(a) in 2</strong>: if 2 is (a), then 3 is (a), then 1 is (a), then 2 is (b)!</li>
-<li>  <strong>(a) in 4</strong>: if 4 is (a), then there exists some (a)</li>
-<li><strong>(d) in 8</strong> &amp;&amp; <strong>(e) in (9)</strong>: list out 1 to 10, which can be prime or factorial or square or cube or 5divided?<br>  If some number satisfies more than one option, it is definitely impossible. Otherwise, which option should we choose?<br>  In this way, prime =&gt; 7, factorial =&gt; 6, square =&gt; 4, cube =&gt; 8.</li>
+<li><strong>(b) in 1</strong>: if 3 is (b), then 2 is (b), but (a) in 2 is also correct!</li>
+<li><strong>(a) in 2</strong>: if 2 is (a), then 3 is (a), then 1 is (a), then 2 is (b)!</li>
+<li><strong>(a) in 4</strong>: if 4 is (a), then there exists some (a)</li>
+<li><strong>(d) in 8</strong> &amp;&amp; <strong>(e) in (9)</strong>: list out 1 to 10, which can be prime or factorial or square or cube or 5divided?<br>If some number satisfies more than one option, it is definitely impossible. Otherwise, which option should we choose?<br>In this way, prime &#x3D;&gt; 7, factorial &#x3D;&gt; 6, square &#x3D;&gt; 4, cube &#x3D;&gt; 8.</li>
 </ul>
 </li>
-<li><p>My first thought was to use 3 and 5 as the key to solution. In my opinion, there should <strong>NEVER</strong> be any ambiguity.<br> In other words, if one option is selected as the answer for a question, all other options must be FALSE!<br> In this way, through 3 and 5 we can eliminate many impossible permutations.</p>
+<li><p>My first thought was to use 3 and 5 as the key to solution. In my opinion, there should <strong>NEVER</strong> be any ambiguity.<br>In other words, if one option is selected as the answer for a question, all other options must be FALSE!<br>In this way, through 3 and 5 we can eliminate many impossible permutations.</p>
 <ul>
-<li>  3:A, 5:any  –  failed</li>
-<li>  3:B, 5:any  –  failed</li>
-<li>  3:C, 5:A    –  failed</li>
-<li>  3:C, 5:B    –  failed</li>
-<li>  3:C, 5:C    –  failed  (D/E are impossible)</li>
-<li>  3:D, 5:D    –  failed  (A/B/C/E are impossible)</li>
-<li>3:E, 5:E    (A/B/C/D are impossible, so this must be the answer! We are almost done!)<ul>
-<li>  3:E, 5:E, 8:E   –  failed</li>
-<li>  3:E, 5:E, 8:B   –  failed (only B/E is possible for 8)</li>
+<li>3:A, 5:any  –  failed</li>
+<li>3:B, 5:any  –  failed</li>
+<li>3:C, 5:A    –  failed</li>
+<li>3:C, 5:B    –  failed</li>
+<li>3:C, 5:C    –  failed  (D&#x2F;E are impossible)</li>
+<li>3:D, 5:D    –  failed  (A&#x2F;B&#x2F;C&#x2F;E are impossible)</li>
+<li>3:E, 5:E    (A&#x2F;B&#x2F;C&#x2F;D are impossible, so this must be the answer! We are almost done!)<ul>
+<li>3:E, 5:E, 8:E   –  failed</li>
+<li>3:E, 5:E, 8:B   –  failed (only B&#x2F;E is possible for 8)</li>
 </ul>
 </li>
 </ul>
-<p> Whaaaaat? all failed?! Below is what I got this when assigning 3:E, 5:E</p>
-<pre><code> 1. The first question that have answer (b) is:
- (c) 4
+<p>Whaaaaat? all failed?! Below is what I got this when assigning 3:E, 5:E</p>
+<pre><code>1. The first question that have answer (b) is:
+(c) 4
 
- 2. The only continous questions that have the same answer are:
- (d) 5 &amp; 6
+2. The only continous questions that have the same answer are:
+(d) 5 &amp; 6
 
- 3. The answer of this question is equal to the answer of which question?:
- (e) 6
+3. The answer of this question is equal to the answer of which question?:
+(e) 6
 
- 4. How many questions have the answer as (a)?
- (b) 1
+4. How many questions have the answer as (a)?
+(b) 1
 
- 5. The answer of this question is equal to the answer of which question?:
- (e) 6
+5. The answer of this question is equal to the answer of which question?:
+(e) 6
 
- 6. The number of answer of (a) is equal to the number of which answer?:
- (e) none of the above
+6. The number of answer of (a) is equal to the number of which answer?:
+(e) none of the above
 
- 7. The difference between the answer of this question and next question is:
-    (The difference between a &amp; b is 1)
- (a) 4, (b) 3, (c) 2
+7. The difference between the answer of this question and next question is:
+   (The difference between a &amp; b is 1)
+(a) 4, (b) 3, (c) 2
 
- 8. How many answers are vowels (a,e)?
- (b) 3, (e) 6
+8. How many answers are vowels (a,e)?
+(b) 3, (e) 6
 
- 9. The number of answers that is non-vowels (b,c,d) is?:
- (a) prime number =&gt; 7, (c) x^2 =&gt; 4
+9. The number of answers that is non-vowels (b,c,d) is?:
+(a) prime number =&gt; 7, (c) x^2 =&gt; 4
 
- 10. The answer of this question is:
- (b) b, (c) c, (d) d, (e) e
+10. The answer of this question is:
+(b) b, (c) c, (d) d, (e) e
 </code></pre>
 </li>
 </ol>

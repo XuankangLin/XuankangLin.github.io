@@ -1,19 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><meta name="generator" content="Hexo 6.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Reading Group - Fencing off Go</h1><p class="post-meta">Posted on Feb 17, 2017</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>Here is my note for paper <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=3009847"><em>“Fencing off Go: Liveness and Safety for Channel-Based Programming”</em></a> when presenting it in our weekly paper reading group on 02/17/2017.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Reading Group - Fencing off Go</h1><p class="post-meta">Posted on Feb 17, 2017</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>Here is my note for paper <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=3009847"><em>“Fencing off Go: Liveness and Safety for Channel-Based Programming”</em></a> when presenting it in our weekly paper reading group on 02&#x2F;17&#x2F;2017.</p>
 <span id="more"></span>
 
 <p>Please do not hesitate to correct me if I am wrong anywhere. Thanks in advance. 🙂</p>
 <p>BTW, I also found the <a target="_blank" rel="noopener" href="https://www.doc.ic.ac.uk/~yoshida/slides/slides-ny.pdf">slides</a> from author. Check it out.</p>
 <br/>
 
-<p>02/23/2017 Update: Great thanks to Prof. <a target="_blank" rel="noopener" href="http://www-kb.is.s.u-tokyo.ac.jp/~koba/">Naoki Kobayashi</a> for generously sharing his thoughts and correcting some errors in this note!</p>
+<p>02&#x2F;23&#x2F;2017 Update: Great thanks to Prof. <a target="_blank" rel="noopener" href="http://www-kb.is.s.u-tokyo.ac.jp/~koba/">Naoki Kobayashi</a> for generously sharing his thoughts and correcting some errors in this note!</p>
 <br/>
 
 <h2 id="Why-picked-this-paper"><a href="#Why-picked-this-paper" class="headerlink" title="Why picked this paper"></a>Why picked this paper</h2><p>This paper is picked while iterating the papers list in POPL’17.</p>
 <p>First of all, I need to admit that I’ve not written programs in Go before. Actually I’d like to take this chance to know more about the concurrency model in Go language. One year ago I wrote about the <a href="/2016/02/03/Memory-Models-in-Go/">shared memory part of Go</a>. At that time I thought Go only has simple constructs in such concurrency consistency model, now I realize that I was seriously wrong, Go could be focusing more on the channel-based message-passing style concurrency.</p>
-<p>Another minor reason for picking this paper is because of word “fencing”. It’s only after reading the full paper that I realized “fencing” is not talking about the “fences/barriers” I am more familiar with.. I’ve never used phrase “fence off” (把…用栅栏隔开) before.. 😓</p>
-<h2 id="Problem-amp-Contribution"><a href="#Problem-amp-Contribution" class="headerlink" title="Problem &amp; Contribution"></a>Problem &amp; Contribution</h2><p>According to the paper, for the channel-based message-passing style concurrency in Go language there is only runtime deadlock detector, but no compile time support on checking communication mismatch and partial deadlocks. The former is what they encode as “liveness” property, and the latter is their “channel safety” property.</p>
+<p>Another minor reason for picking this paper is because of word “fencing”. It’s only after reading the full paper that I realized “fencing” is not talking about the “fences&#x2F;barriers” I am more familiar with.. I’ve never used phrase “fence off” (把…用栅栏隔开) before.. 😓</p>
+<h2 id="Problem-Contribution"><a href="#Problem-Contribution" class="headerlink" title="Problem &amp; Contribution"></a>Problem &amp; Contribution</h2><p>According to the paper, for the channel-based message-passing style concurrency in Go language there is only runtime deadlock detector, but no compile time support on checking communication mismatch and partial deadlocks. The former is what they encode as “liveness” property, and the latter is their “channel safety” property.</p>
 <ul>
-<li><p>Intuitively, the “communication mismatch” means every read/write must be “synchronized” with some other write/read, i.e., a WRITE should be read and a READ should reads from some WRITE.</p>
+<li><p>Intuitively, the “communication mismatch” means every read&#x2F;write must be “synchronized” with some other write&#x2F;read, i.e., a WRITE should be read and a READ should reads from some WRITE.</p>
 </li>
 <li><p>The channel-safety property is simpler – channel is closed at most once, and closed channel cannot be used for output (writing to that channel), while input from closed is allowed, just returning default value.</p>
 </li>
@@ -26,7 +30,7 @@
 <p>They claim to support “dynamic channel creation”, “unbounded thread creation”. I suspect that “dynamic thread creation” is not supported at the moment, because I didn’t find corresponding semantics terms. But this may not be a big issue since analysis of Go source code could prepare this information beforehand.</p>
 <h2 id="Example-–-Prime-Sieve"><a href="#Example-–-Prime-Sieve" class="headerlink" title="Example – Prime Sieve"></a>Example – Prime Sieve</h2><p>Before delving into details, let’s look at the Prime Sieve algorithm as an example demonstrating the entire workflow.</p>
 <p>There is a very good visualization for Prime sieve algorithm in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">wikipedia</a>. Basically, every prime number removes all future numbers that divdes this prime number.</p>
-<p>In Go, the concurrent channel-based version could be written as:<br><img src="prime_sieve_in_go.png"><br>where</p>
+<p>In Go, the concurrent channel-based version could be written as:<br><img src="/prime_sieve_in_go.png"><br>where</p>
 <ul>
 <li><code>Generate()</code> will be a Go Routine that keeps generating new numbers.</li>
 <li><code>Filter()</code> will be a Go Routine transporting those numbers from input channel to output channel that is not dividable by a prime number.</li>
@@ -36,16 +40,16 @@
 <ol>
 <li>Infer a calculi from Go source code called <code>MiGo</code>, covering all channel-based concurrency usages.</li>
 <li>Extract a behavioral type system for the calculi.</li>
-<li>When it type checks, verify the liveness/safety properties at type level. The link between type-level and calculi level liveness/safety properties is proved in the paper.</li>
+<li>When it type checks, verify the liveness&#x2F;safety properties at type level. The link between type-level and calculi level liveness&#x2F;safety properties is proved in the paper.</li>
 </ol>
-<p>Regarding the prime sieve example, the extracted behavioral types would be:<br><img src="types_of_prime_sieve.png"><br>where</p>
+<p>Regarding the prime sieve example, the extracted behavioral types would be:<br><img src="/types_of_prime_sieve.png"><br>where</p>
 <ul>
 <li><code>t0</code> is the entry point of program.</li>
 <li>$\bar{x}$ means writing to channel <code>x</code> while $x$ means reading from channel <code>x</code>.</li>
 <li><code>g(x)</code> is for generator function, which writes something to channel <code>x</code> and recursively calls itself.</li>
 <li><code>f(x,y)</code> is for filtering function, which first reads from channel <code>x</code> and then conditionally writes to channel <code>y</code> before recursively calling itself.</li>
 <li><code>new b</code> means creating a new channel <code>b</code>.</li>
-<li>$\oplus$ is branching / choice operator. <code>|</code> is for parallel composition.</li>
+<li>$\oplus$ is branching &#x2F; choice operator. <code>|</code> is for parallel composition.</li>
 </ul>
 <p>For this example, it can be shown that all 4 types are <em>fenced</em> (we will explain shortly). And they can be shown to hold the liveness and safety properties by unfolding the behavioral type semantics.</p>
 <h2 id="Behavioral-Types"><a href="#Behavioral-Types" class="headerlink" title="Behavioral Types"></a>Behavioral Types</h2><p>Above is a quick view of extracted behavioral types. Frankly, I have not learned about this term before. According to survey <a target="_blank" rel="noopener" href="http://www.behavioural-types.eu/publications/WG3SOAR.pdf"><em>Behavioral Types in Programming Languages</em></a>:</p>
@@ -60,21 +64,21 @@
 </blockquote>
 <p>And the authors seem to be experts in this area – they appear in the authors list of this survey and one tutorial cited in the paper. BTW, session types seem to be one kind of behavioral types.</p>
 <h2 id="Verification-of-Behavioral-Types"><a href="#Verification-of-Behavioral-Types" class="headerlink" title="Verification of Behavioral Types"></a>Verification of Behavioral Types</h2><p>As you can see, the defined behavioral type system is no longer simply carrying the type of payload data, it encodes certain behaviors in the type system. This makes it possible to define operational semantics on types.</p>
-<p>Consequently, liveness / safety properties could be verified by the further defined operational semantics. In paper, this workflow is formulated as:</p>
+<p>Consequently, liveness &#x2F; safety properties could be verified by the further defined operational semantics. In paper, this workflow is formulated as:</p>
 <ul>
-<li>If the symbolic executions of each Type holds the liveness / channel-safety property,</li>
+<li>If the symbolic executions of each Type holds the liveness &#x2F; channel-safety property,</li>
 <li>then the property holds at the Behavioral Type level,</li>
 <li>then the property holds (maybe, in case of liveness) at the calculi level,</li>
 <li>then the property holds at the source code (because calculi covers all channel-based concurrency).</li>
 </ul>
 <p>This 4 levels implication chain is my current comprehension of their entire approach workflow.</p>
 <h2 id="Fenced"><a href="#Fenced" class="headerlink" title="Fenced"></a>Fenced</h2><p>However, with the straightforwardly defined behavioral types, it may not be decidable (proved long long ago). Thus a subset of types needs to be identified which could make it decidable. That is their <em>fenced types</em>.</p>
-<p>// <em>02/23/2017: Thanks Prof. Naoki for sharing his thoughts and correcting some errors here!</em></p>
+<p>&#x2F;&#x2F; <em>02&#x2F;23&#x2F;2017: Thanks Prof. Naoki for sharing his thoughts and correcting some errors here!</em></p>
 <p><em>Below is my Revised Understanding:</em></p>
 <p>The semantics of their Types is defined in Fig. 5 using “types as Calculus of Computing Systems (CCS) processes” interpretation. The resulting Labeled Transition System (LTS) provides a state space to explore, which is possibly infinite and thus undecidable.</p>
-<p>To resolve this, they define in Fig. 7 a Symbolic Semantics for Types, which can explore only a finite subset of the possibly infinite state space which could therefore make it decidable. This finiteness guarantee is made possible by additional parameters <code>k</code> and <code>N</code>, where <code>k</code> is the bound on steps (e.g. k-liveness / k-safety) and <code>N</code> is the bound on used channel names.</p>
+<p>To resolve this, they define in Fig. 7 a Symbolic Semantics for Types, which can explore only a finite subset of the possibly infinite state space which could therefore make it decidable. This finiteness guarantee is made possible by additional parameters <code>k</code> and <code>N</code>, where <code>k</code> is the bound on steps (e.g. k-liveness &#x2F; k-safety) and <code>N</code> is the bound on used channel names.</p>
 <ul>
-<li><p>Regarding <code>k</code>: When <code>k</code> is infinity,  ∞-liveness/safety will again need to explore the possibly infinite state space. So ∞-liveness/safety is undecidable.</p>
+<li><p>Regarding <code>k</code>: When <code>k</code> is infinity,  ∞-liveness&#x2F;safety will again need to explore the possibly infinite state space. So ∞-liveness&#x2F;safety is undecidable.</p>
 </li>
 <li><p>Regarding <code>N</code>: This bound is ensured by “Fenced”. My current intuition about their “Fenced” definition is elaborated as below:</p>
 <p>  In semantics rules, they require in Def. 4.1 that:</p>
@@ -88,9 +92,9 @@
 <br/>
 
 <p>Let’s look in some visualized examples in addition to textual explainations. Intuitively, “having finite memory of channel names during recursion” implies no channel names should appear infinitely often. In other words, they appear in some <em>fenced</em> region. This is why they call it “fenced types”.</p>
-<p>Below is one true fenced type diagram:<br><img src="fenced_type_correct.png"><br>The blue region is where channel <code>a</code> appears. The red region is where channel <code>b1</code> appears. In the following wrong fenced type diagram:<br><img src="fenced_type_wrong.png"><br>channel <code>a</code> appears infinitely often, it’s not fenced.</p>
+<p>Below is one true fenced type diagram:<br><img src="/fenced_type_correct.png"><br>The blue region is where channel <code>a</code> appears. The red region is where channel <code>b1</code> appears. In the following wrong fenced type diagram:<br><img src="/fenced_type_wrong.png"><br>channel <code>a</code> appears infinitely often, it’s not fenced.</p>
 <h2 id="Special-Cases-Regarding-Liveness"><a href="#Special-Cases-Regarding-Liveness" class="headerlink" title="Special Cases Regarding Liveness"></a>Special Cases Regarding Liveness</h2><p>We mentioned earlier that channel-safety property can flow from behavioral type level to calculi level while this is not necessarily the case for liveness property.</p>
-<p>This is because Type System is actually an approximation of code / calculi.</p>
+<p>This is because Type System is actually an approximation of code &#x2F; calculi.</p>
 <blockquote>
 <p>For the case of liveness, programs typically rely on data values to guide their control flow (e.g. in conditional branches) which are abstracted away at the type level.</p>
 </blockquote>
@@ -105,8 +109,8 @@
 <h2 id="My-Thoughts"><a href="#My-Thoughts" class="headerlink" title="My Thoughts"></a>My Thoughts</h2><p>Apparently, the key step in this paper is to successfully apply behavioral types.</p>
 <p>I don’t know much about those type systems, and may not be doing type-system related works in foreseeable future. But in my shallow understanding, the verification effort still exists there, but now transfers from source code level to behavioral type level.</p>
 <p>Hence, my doubt is how much would it gain to do such symbolic execution analysis at the type level? Maybe it becomes more powerful with additional type information? The authors do mention doing model checking with the defined operational semantics. Why is it better to do such thing in type level remains to be my overall question.</p>
-<p>If the type system continues to approximate more and more of code, could we eventually apply concurrency logics (e.g. Rely/Guarantee) in the very rich type system? I’d be very interested if that is possible.</p>
-<p>Besides, as mentioned earlier in the note, I am also wondering how difficult it would be to extend the current livenss / channel-safety properties to general predicates?</p>
+<p>If the type system continues to approximate more and more of code, could we eventually apply concurrency logics (e.g. Rely&#x2F;Guarantee) in the very rich type system? I’d be very interested if that is possible.</p>
+<p>Besides, as mentioned earlier in the note, I am also wondering how difficult it would be to extend the current livenss &#x2F; channel-safety properties to general predicates?</p>
 <p>🤔</p>
 </article><ul class="pager blog-pager"><li class="previous"><a href="/2017/03/23/%E8%B5%84%E6%B2%BB%E9%80%9A%E9%89%B4%E2%80%94%E2%80%94%E6%88%98%E5%9B%BD%E3%80%81%E7%A7%A6/" data-toggle="tooltip" data-placement="top" title="资治通鉴——战国、秦">← Previous Post</a></li><li class="next"><a href="/2017/02/13/%E8%87%AA%E5%AE%9A%E4%B9%89-RSS-Feed-%E8%AF%95%E9%AA%8C%E8%AE%B0%E5%BD%95/" data-toggle="tooltip" data-placement="top" title="自定义 RSS Feed 试验记录">Next Post →</a></li></ul><div class="disqus-comments"><div class="comments"><div id="disqus_thread"></div></div></div><script>var url_parts = window.location.href.split("?");
 var disqus_url = url_parts[0];

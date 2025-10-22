@@ -1,4 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><meta name="generator" content="Hexo 6.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>KLEE &amp; Gcov</h1><p class="post-meta">Posted on Mar 25, 2015</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>KLEE其实已经久仰大名了，在读<a target="_blank" rel="noopener" href="http://pgbovine.net/PhD-memoir.htm"><em>The PhD Grind</em></a>的时候就看的胆战心惊.. 这学期的CS510 Software Engineering课上终于可以一展真容了！</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">Xuankang's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/About-Me/">About</a></li><li><a href="/archives">Archive</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/img/avartar.jpg" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>KLEE &amp; Gcov</h1><p class="post-meta">Posted on Mar 25, 2015</p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><p>KLEE其实已经久仰大名了，在读<a target="_blank" rel="noopener" href="http://pgbovine.net/PhD-memoir.htm"><em>The PhD Grind</em></a>的时候就看的胆战心惊.. 这学期的CS510 Software Engineering课上终于可以一展真容了！</p>
 <span id="more"></span>
 
 <br/>
@@ -10,7 +14,7 @@
 <p>At its core, KLEE is just an interpreter for LLVM bitcode.</p>
 </blockquote>
 <p>我现在的理解是，KLEE是一个symbolic execution的工具，在source code编译而成的LLVM bytecode文件基础上，symbolic地跑一遍，跑各种path从而生成各种test case, 其间还可以顺便检查一些常见的错误出来。</p>
-<h1 id="Gcov-amp-KLEE之间不得不说的关系"><a href="#Gcov-amp-KLEE之间不得不说的关系" class="headerlink" title="Gcov &amp; KLEE之间不得不说的关系"></a>Gcov &amp; KLEE之间不得不说的关系</h1><p>KLEE的效果评估就需要用到Gcov了。首先需要介绍一个<strong>Code Coverage</strong>的概念，<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Code_coverage">wiki</a>上说，Code Coverage指的是衡量test suite测试了整个program代码的标准，e.g. 通过多少个sub-routine被调用过，多少行被调用过这样子</p>
+<h1 id="Gcov-KLEE之间不得不说的关系"><a href="#Gcov-KLEE之间不得不说的关系" class="headerlink" title="Gcov &amp; KLEE之间不得不说的关系"></a>Gcov &amp; KLEE之间不得不说的关系</h1><p>KLEE的效果评估就需要用到Gcov了。首先需要介绍一个<strong>Code Coverage</strong>的概念，<a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Code_coverage">wiki</a>上说，Code Coverage指的是衡量test suite测试了整个program代码的标准，e.g. 通过多少个sub-routine被调用过，多少行被调用过这样子</p>
 <p>Gcov就是这么一个在gcc toolchain下的已经成熟的code coverage tool. <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Gcov">wiki</a>说明如下：</p>
 <blockquote>
 <p>Gcov is a source code coverage analysis and statement-by-statement profiling tool. Gcov generates exact counts of the number of times each statement in a program is executed and annotates source code to add instrumentation.</p>
@@ -18,7 +22,7 @@
 <p>据说，gcov生成的log文件，记录了source file内每一行执行了几次，而gcc toolchain下的另一个工具gprof给出的是执行时间信息，两个可以结合在一起用来profiling &amp; tuning.</p>
 <p>Gcov可以用来评估KLEE的coverage. 具体过程如下：</p>
 <ol>
-<li><p>   llvm-gcc/clang, 将source code编译成LLVM bytecode</p>
+<li><p>   llvm-gcc&#x2F;clang, 将source code编译成LLVM bytecode</p>
 </li>
 <li><p>   KLEE在LLVM bytecode上生成一堆test cases</p>
 </li>
@@ -26,11 +30,11 @@
 </li>
 <li><p>   klee-replay命令可以将上述GCC生成的binary file在所有生成的test cases上跑一遍。其间会生成.gcda文件记录coverage信息</p>
 </li>
-<li><p>gcov通过这些.gcda文件计算类似下边这些数据的信息</p>
-<pre><code> Lines executed:77.78% of 45
- Branches executed:75.00% of 16
- Taken at least once:75.00% of 16
- Calls executed:64.71% of 17
+<li><p>   gcov通过这些.gcda文件计算类似下边这些数据的信息</p>
+<pre><code>  Lines executed:77.78% of 45
+  Branches executed:75.00% of 16
+  Taken at least once:75.00% of 16
+  Calls executed:64.71% of 17
 </code></pre>
 </li>
 </ol>
@@ -40,14 +44,14 @@
 <blockquote>
 <p>KLEE [17] and EXE [19] can implement a DFS search with a configurable maximum depth for cyclic paths to prevent infinite loops.</p>
 </blockquote>
-<p>// 注：这个EXE好像是KLEE同一批人做的</p>
+<p>&#x2F;&#x2F; 注：这个EXE好像是KLEE同一批人做的</p>
 <p>再比如说没有处理longjmp什么的：</p>
 <blockquote>
 <p>A significant amount of previous work in forward symbolic execution does not directly address the symbolic jump problem [9] [17] ….</p>
 </blockquote>
 <p>这些我就不摘录了，值得摘录的有下边这段，作者之一在他的另外一篇paper中的介绍，主要讲的是相对于EXE的改进：</p>
 <blockquote>
-<p>KLEE [11] is a redesign of EXE, built on top of the LLVM [39] compiler infrastructure. Like EXE, it performs mixed concrete/symbolic execution, models memory with bit-level accuracy, employs a variety of constraint solving optimizations, and uses search heuristics to get high code coverage.</p>
+<p>KLEE [11] is a redesign of EXE, built on top of the LLVM [39] compiler infrastructure. Like EXE, it performs mixed concrete&#x2F;symbolic execution, models memory with bit-level accuracy, employs a variety of constraint solving optimizations, and uses search heuristics to get high code coverage.</p>
 </blockquote>
 <blockquote>
 <p>One of the key improvements of KLEE over EXE is its ability to store a much larger number of concurrent states, by exploiting sharing among states at the object-, rather than at the page-level as in EXE. Another important improvement is its ability to handle interactions with the outside environment — e.g., with data read from the file system or over the network — by providing models designed to explore all possible legal interactions with the outside world.</p>
@@ -65,7 +69,7 @@
 </ol>
 </blockquote>
 <p>从文中来看似乎KLEE主要有改进的是第二点，它把这种environment的影响也变成input那样的symbolic的东西，然后进一步执行，即为 - -sym-args &amp; - -sym-files参数</p>
-<p>文中讲到usage的时候也说了大致要传怎样的参数进去，像max-time, argc/argv这样的都是需要/可以指定的。此外，paper里讲的- -sym-args用法和现在官网上写的用法不一样呃….</p>
+<p>文中讲到usage的时候也说了大致要传怎样的参数进去，像max-time, argc&#x2F;argv这样的都是需要&#x2F;可以指定的。此外，paper里讲的- -sym-args用法和现在官网上写的用法不一样呃….</p>
 <ul>
 <li>   [paper版本]：- -sym-args 1 2 3 指的是3个参数，第一个大小是1，第二个大小是2，第三个大小是3</li>
 <li>   [官网版本]: - -sym-args 1 2 3 指的是1到2个参数，每一个的大小是3</li>
