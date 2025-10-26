@@ -5,15 +5,27 @@ var main = {
   bigImgEl : null,
   numImgs : null,
 
+  // Debounce function to limit how often a function is called
+  debounce : function(func, wait) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        func.apply(context, args);
+      }, wait);
+    };
+  },
+
   init : function() {
     // Shorten the navbar after scrolling a little bit down
-    $(window).scroll(function() {
+    $(window).scroll(main.debounce(function() {
         if ($(".navbar").offset().top > 50) {
             $(".navbar").addClass("top-nav-short");
         } else {
             $(".navbar").removeClass("top-nav-short");
         }
-    });
+    }, 100));
     
     // On mobile, hide the avatar when expanding the navbar menu
     $('#main-navbar').on('show.bs.collapse', function () {
