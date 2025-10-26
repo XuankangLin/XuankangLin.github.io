@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xuankanglin.com/About-Me/index.html</loc>
+    
+    <lastmod>2025-10-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://xuankanglin.com/2016/09/27/Abstract-Interpretation-Invariant-Generation/</loc>
     
     <lastmod>2025-10-22</lastmod>
@@ -41,15 +50,6 @@
     <loc>http://xuankanglin.com/2022/05/22/%E5%8D%88%E9%97%B4%E5%A4%9C%E8%AF%9D%E5%90%88%E8%BE%9122%E6%98%A5/</loc>
     
     <lastmod>2022-05-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://xuankanglin.com/About-Me/index.html</loc>
-    
-    <lastmod>2022-05-21</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1129,7 +1129,7 @@
 
   <url>
     <loc>http://xuankanglin.com/</loc>
-    <lastmod>2025-10-22</lastmod>
+    <lastmod>2025-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
