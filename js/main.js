@@ -1,17 +1,17 @@
 // Dean Attali / Beautiful Jekyll 2016
 
-var main = {
+const main = {
 
   bigImgEl : null,
   numImgs : null,
 
   // Debounce function to limit how often a function is called
   debounce : function(func, wait) {
-    var timeout;
+    let timeout;
     return function() {
-      var context = this, args = arguments;
+      const context = this, args = arguments;
       clearTimeout(timeout);
-      timeout = setTimeout(function() {
+      timeout = setTimeout(() => {
         func.apply(context, args);
       }, wait);
     };
@@ -37,9 +37,9 @@ var main = {
 	
     // On mobile, when clicking on a multi-level navbar menu, show the child links
     $('#main-navbar').on("click", ".navlinks-parent", function(e) {
-      var target = e.target;
+      const target = e.target;
       $.each($(".navlinks-parent"), function(key, value) {
-        if (value == target) {
+        if (value === target) {
           $(value).parent().toggleClass("show-children");
         } else {
           $(value).parent().removeClass("show-children");
@@ -48,22 +48,22 @@ var main = {
     });
     
     // Ensure nested navbar menus are not longer than the menu header
-    var menus = $(".navlinks-container");
+    const menus = $(".navlinks-container");
     if (menus.length > 0) {
-      var navbar = $("#main-navbar ul");
-      var fakeMenuHtml = "<li class='fake-menu' style='display:none;'><a></a></li>";
+      const navbar = $("#main-navbar ul");
+      const fakeMenuHtml = "<li class='fake-menu' style='display:none;'><a></a></li>";
       navbar.append(fakeMenuHtml);
-      var fakeMenu = $(".fake-menu");
+      const fakeMenu = $(".fake-menu");
 
       $.each(menus, function(i) {
-        var parent = $(menus[i]).find(".navlinks-parent");
-        var children = $(menus[i]).find(".navlinks-children a");
-        var words = [];
+        const parent = $(menus[i]).find(".navlinks-parent");
+        const children = $(menus[i]).find(".navlinks-children a");
+        let words = [];
         $.each(children, function(idx, el) { words = words.concat($(el).text().trim().split(/\s+/)); });
-        var maxwidth = 0;
+        let maxwidth = 0;
         $.each(words, function(id, word) {
           fakeMenu.html("<a>" + word + "</a>");
-          var width =  fakeMenu.width();
+          const width =  fakeMenu.width();
           if (width > maxwidth) {
             maxwidth = width;
           }
@@ -84,39 +84,35 @@ var main = {
       main.bigImgEl = $("#header-big-imgs");
       main.numImgs = main.bigImgEl.attr("data-num-img");
 
-          // 2fc73a3a967e97599c9763d05e564189
 	  // set an initial image
-	  var imgInfo = main.getImgInfo();
-	  var src = imgInfo.src;
-	  var desc = imgInfo.desc;
+	  let imgInfo = main.getImgInfo();
+	  let src = imgInfo.src;
+	  let desc = imgInfo.desc;
   	  main.setImg(src, desc);
-  	
+
 	  // For better UX, prefetch the next image so that it will already be loaded when we want to show it
-  	  var getNextImg = function() {
-	    var imgInfo = main.getImgInfo();
-	    var src = imgInfo.src;
-	    var desc = imgInfo.desc;		  
-	    
-		var prefetchImg = new Image();
+  	  const getNextImg = () => {
+	    imgInfo = main.getImgInfo();
+	    src = imgInfo.src;
+	    desc = imgInfo.desc;
+
+		const prefetchImg = new Image();
   		prefetchImg.src = src;
-		// if I want to do something once the image is ready: `prefetchImg.onload = function(){}`
-		
-  		setTimeout(function(){
-                  var img = $("<div></div>").addClass("big-img-transition").css("background-image", 'url(' + src + ')');
+
+  		setTimeout(() => {
+                  const img = $("<div></div>").addClass("big-img-transition").css("background-image", 'url(' + src + ')');
   		  $(".intro-header.big-img").prepend(img);
-  		  setTimeout(function(){ img.css("opacity", "1"); }, 50);
-		  
+  		  setTimeout(() => { img.css("opacity", "1"); }, 50);
+
 		  // after the animation of fading in the new image is done, prefetch the next one
-  		  //img.one("transitioned webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
-		  setTimeout(function() {
+		  setTimeout(() => {
 		    main.setImg(src, desc);
 			img.remove();
   			getNextImg();
-		  }, 1000); 
-  		  //});		
+		  }, 1000);
   		}, 6000);
   	  };
-	  
+
 	  // If there are multiple images, cycle through them
 	  if (main.numImgs > 1) {
   	    getNextImg();
@@ -125,10 +121,10 @@ var main = {
   },
   
   getImgInfo : function() {
-  	var randNum = Math.floor((Math.random() * main.numImgs) + 1);
-    var src = main.bigImgEl.attr("data-img-src-" + randNum);
-	var desc = main.bigImgEl.attr("data-img-desc-" + randNum);
-	
+  	const randNum = Math.floor((Math.random() * main.numImgs) + 1);
+    const src = main.bigImgEl.attr("data-img-src-" + randNum);
+	const desc = main.bigImgEl.attr("data-img-desc-" + randNum);
+
 	return {
 	  src : src,
 	  desc : desc
@@ -144,7 +140,5 @@ var main = {
 	}
   }
 };
-
-// 2fc73a3a967e97599c9763d05e564189
 
 document.addEventListener('DOMContentLoaded', main.init);
