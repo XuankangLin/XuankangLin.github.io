@@ -248,6 +248,16 @@ footer a {
   color: #404040;
 }
 
+footer .footer-icon-image {
+  width: 65%;
+  height: 65%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: invert(1);
+}
+
 footer .list-inline {
   margin: 0;
   padding: 0;
