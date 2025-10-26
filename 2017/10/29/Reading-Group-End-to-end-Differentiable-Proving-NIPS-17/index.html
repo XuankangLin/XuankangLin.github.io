@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><!-- hexo injector head_end start -->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="gungunba"><link rel="icon" href="/img/favicon.png"><title>Xuankang Lin</title><meta name="description" content="Personal Website of Xuankang Lin"><link rel="alternate" type="application/rss+xml" title="Xuankang Lin" href="/atom.xml"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
@@ -13,9 +13,9 @@
 <p>First of all, the word <code>king</code> can be represented as <code>0 0 1 0 ... 0</code> regarding a dictionary $D$ if <code>king</code> is the 2nd (zero-based) word in $D$. Only the 2nd bit is 1, and all the rest are 0. The size of this vector is the size of $D$. This is called <em>one-hot encoding</em>.</p>
 <p>Then <em>distributed representation</em> is like the dual concept of <em>one-hot encoding</em>, it can have multiple non-zero values, say <code>0.12 0.0 0.87 -0.77 ... 0.99</code>.</p>
 <p>This is also called <font color="blue"><em>embedding</em></font>, it is essentially a vector in the high dimension space representing the original word. After training, semantically related words are supposed to have close vectors in high dimension space. Moreover, some relation between words may also be learned, as shown below:</p>
-<p><img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/embedding.jpg"></p>
+<p><img src="/embedding.jpg"></p>
 <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Now let’s take a closer look at this paper. I think this paper is very interesting, in that it successfully integrates ML techniques and PL techniques, and can “induce logical rules”!</p>
-<h3 id="Previously-in-PL"><a href="#Previously-in-PL" class="headerlink" title="Previously in PL"></a>Previously in PL</h3><p>There is the so-called <em>backward chaining</em> algorithm as in Prolog that can search and construct a proof for some goal. For example: <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/backward_chaining.png"></p>
+<h3 id="Previously-in-PL"><a href="#Previously-in-PL" class="headerlink" title="Previously in PL"></a>Previously in PL</h3><p>There is the so-called <em>backward chaining</em> algorithm as in Prolog that can search and construct a proof for some goal. For example: <img src="/backward_chaining.png"></p>
 <ul>
 <li><p>In the example Knowledge Base (KB), (1) and (2) are facts, (3) is a rule – to prove that X is grandfather of Y, it suffices to satisfy two subgoals:</p>
 <ul>
@@ -35,7 +35,7 @@
 <li><code>isFruit(apple)</code> and <code>isFruit(orange)</code> are not related at all, unless “apple ~ orange” is specified explicitly elsewhere.</li>
 </ul>
 <p>These are where ML technique can help!</p>
-<h3 id="Previously-in-ML"><a href="#Previously-in-ML" class="headerlink" title="Previously in ML"></a>Previously in ML</h3><p>There is the so-called <em>Neural Link Prediction</em> problem whose main approach is based on <em>embedding</em>. <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/neural_link_prediction.png"></p>
+<h3 id="Previously-in-ML"><a href="#Previously-in-ML" class="headerlink" title="Previously in ML"></a>Previously in ML</h3><p>There is the so-called <em>Neural Link Prediction</em> problem whose main approach is based on <em>embedding</em>. <img src="/neural_link_prediction.png"></p>
 <p>According to paper description, those are unable to directly encode prior knowledge such as <code>grandfatherOf(X, Y) :- fatherOf(X, Z) &amp; parentOf(Z, Y)</code>.</p>
 <p>This missing <em>multi-hop reasoning</em> ability will be added after incorporating the <em>backward chaining</em> search algorithm!</p>
 <h2 id="Integration"><a href="#Integration" class="headerlink" title="Integration"></a>Integration</h2><p>This paper merges existing “Neural Link Prediction” idea (mainly via learning embeddings of sub-symbolic terms) with traditional “backward chaining” algorithm in Prolog.</p>
@@ -54,7 +54,7 @@
 <li>RBF kernel can output a score for two vectors.</li>
 <li>I suspect the reason of using RBF kernel is to train jointly with Neural Link Predictor later on. They mentioned this optimizer in the paper later on. That Neural Link Predictor is used as a “regularizer” towards better training.</li>
 </ul>
-<p>The unification module is shown as below. <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/unification.png"></p>
+<p>The unification module is shown as below. <img src="/unification.png"></p>
 <ul>
 <li><p>(1)-(4) are self-explanatory, just list comparison.</p>
 </li>
@@ -63,7 +63,7 @@
 <li><p>$S_ρ’$ is the difference. This proof success score is updated to the min of all sub-symbolic pairwise comparison results, with the cap of previous score. Note that it only compares non-variable symbols.</p>
 </li>
 </ul>
-<p>Consider the following example: <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/unify.png"></p>
+<p>Consider the following example: <img src="/unify.png"></p>
 <ul>
 <li><p>It tries to unify <code>[grandpaOf, ABE, BART]</code> with <code>[s, Q, i]</code>, the given proof state is an empty substitution set ∅ and a proof score 0.7.</p>
 </li>
@@ -73,8 +73,8 @@
 </li>
 </ul>
 <h3 id="OR-AND"><a href="#OR-AND" class="headerlink" title="OR &#x2F; AND"></a>OR &#x2F; AND</h3><p>There are also corresponding <em>OR module</em> and <em>AND module</em> that are simply re-implementations of traditional backward chaining algorithm with different notations to handle proof state $(S_ψ, S_ρ)$.</p>
-<h3 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h3><p>With all these, the actual proof search is to find the largest proof tree that maximizes the proof success score $S_ρ$ with a non-FAIL result: <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/ntp_inference.png"></p>
-<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/ntp_example.png"></p>
+<h3 id="Inference"><a href="#Inference" class="headerlink" title="Inference"></a>Inference</h3><p>With all these, the actual proof search is to find the largest proof tree that maximizes the proof success score $S_ρ$ with a non-FAIL result: <img src="/ntp_inference.png"></p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><img src="/ntp_example.png"></p>
 <p>Consider the same example now using their Neural Theorem Prover approach. It is trying to prove some goal of <code>(s, i, j)</code>, none of which are variables. $V_s$ is the vector representation (embedding) of <code>s</code>.</p>
 <ul>
 <li>From my understanding, <code>(s, i, j)</code> is a parameterized template, but not concrete values, yet. Now that the unification is done by embedding similarity scores, it can find multiple non-fixed terms (each with a confidence score) with a similar shape. This can be used in their another application of “inducing logical rules”.</li>
@@ -90,7 +90,7 @@
 <p>One important optimization is to do joint training with Neural Link Predictor (ξ3.8). The neural link predictor ComplEx they use can learn local sub-symbolic representations much better, which uses RBF as well (that’s why I suspect they are using RBF because of this).</p>
 <p>So the loss is just by adding NTP loss and ComplEx loss. In other words, ComplEx serve as a regularizer here.</p>
 <h2 id="Inducing-Logical-Rules"><a href="#Inducing-Logical-Rules" class="headerlink" title="Inducing Logical Rules"></a>Inducing Logical Rules</h2><p>Wait, one more thing!</p>
-<p>They claim to be able to “induce” logical rules! As shown below: <img src="/2017/10/29/Reading-Group-End-to-end-Differentiable-Proving-NIPS-17/induced_rules.png"></p>
+<p>They claim to be able to “induce” logical rules! As shown below: <img src="/induced_rules.png"></p>
 <p>It can induce the rule such as “To prove that X is located in Y, it can prove that X is located in some Z and Z is located in Y”.</p>
 <p>Isn’t this awesome?! Well, it’s not pure magic. Some “parametrized rule” needs to be provided as a template, such as <code>r(X, Y) :- s(X, Z), t(Z, Y)</code>.</p>
 <p>The idea is that:</p>
@@ -111,9 +111,9 @@ var disqus_url = url_parts[0];
     dsq.async = true;
     dsq.src = "//andriylin-blog.disqus.com/embed.js";
     (document.head || d.body ).appendChild(dsq);
-})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/xuankanglin/" title="LinkedIn"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-linkedin"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://github.com/XuankangLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-douban"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-goodreads"></i></span></a></li></ul><p class="copyright text-muted">© gungunba • 2025
+})();</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-solid fa-rss"></i></span></a></li><li><a href="mailto:xuankang.lin@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-solid fa-envelope"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/xuankanglin/" title="LinkedIn"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-brands fa-linkedin"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://github.com/XuankangLin" title="GitHub"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-brands fa-github"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.douban.com/people/andriylin/" title="Douban"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-brands fa-douban"></i></span></a></li><li><a target="_blank" rel="noopener" href="https://www.goodreads.com/xuankanglin" title="Goodreads"><span class="fa-stack fa-lg"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-stack-1x fa-inverse fa-brands fa-goodreads"></i></span></a></li></ul><p class="copyright text-muted">© gungunba • 2025
 </p><p class="theme-by text-muted">Theme by
-<a target="_blank" rel="noopener" href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script async src="https://www.googletagmanager.com/gtag/js?id=#{theme.google_analytics.id}"></script><script>window.dataLayer = window.dataLayer || [];
+<a target="_blank" rel="noopener" href="https://github.com/XuankangLin/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script><script async src="https://www.googletagmanager.com/gtag/js?id=#{theme.google_analytics.id}"></script><script>window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 
