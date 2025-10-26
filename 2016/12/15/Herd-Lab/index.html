@@ -39,7 +39,7 @@
 <p> <code>dot -Tpng ./output/SB.dot -o SB.png</code></p>
 </li>
 </ol>
-<h2 id="Warm-up"><a href="#Warm-up" class="headerlink" title="Warm up"></a>Warm up</h2><p>The herd7 tool website is easy to use:<br><img src="/website_intro.png"></p>
+<h2 id="Warm-up"><a href="#Warm-up" class="headerlink" title="Warm up"></a>Warm up</h2><p>The herd7 tool website is easy to use:<br><img src="/2016/12/15/Herd-Lab/website_intro.png"></p>
 <ul>
 <li>The blue “tutorial” button is to switch different testing suites.</li>
 <li>In each test suite there could be multiple models (.cat) and multiple litmus tests (.litmus).<ul>
@@ -99,12 +99,12 @@
 <br/>
 
 <p>So, what if we want to avoid the non-MP behavior? How shall we define the model accordingly?</p>
-<p>To do that, let’s first define relation <code>fr</code> (from-read). <code>fr</code> is also named <code>read-before</code> sometimes in some other works. The intuition behind <code>fr</code> is shown below:<br><img src="/fr.png"><br>This image is clipped from paper <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2627752"><em>Herding Cats: Modelling, Simulation, Testing, and Data Mining for Weak Memory</em></a> by authors of herd7. The basic idea is that: if a read event R reads value from a write event W0 that is before another write event W1 via <code>co</code>, then R <code>fr</code> W1.</p>
+<p>To do that, let’s first define relation <code>fr</code> (from-read). <code>fr</code> is also named <code>read-before</code> sometimes in some other works. The intuition behind <code>fr</code> is shown below:<br><img src="/2016/12/15/Herd-Lab/fr.png"><br>This image is clipped from paper <a target="_blank" rel="noopener" href="http://dl.acm.org/citation.cfm?id=2627752"><em>Herding Cats: Modelling, Simulation, Testing, and Data Mining for Weak Memory</em></a> by authors of herd7. The basic idea is that: if a read event R reads value from a write event W0 that is before another write event W1 via <code>co</code>, then R <code>fr</code> W1.</p>
 <p>The computation of <code>fr</code> is omitted here. We could include <code>cos.cat</code> (<a target="_blank" rel="noopener" href="https://github.com/herd/herdtools7/blob/master/herd/libdir/cos.cat">src code</a>) to include the computation for both <code>fr</code> and <code>co</code>:</p>
 <figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;I can&#x27;t dance&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;cos.cat&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>Now run the MP litmus test again against the refined model, relation <code>fr</code> will appear in the generated execution graphs. Below is the execution graph that demonstrates <code>{ r1 = 1 ∧ r2 = 0 }</code> non-MP behavior:</p>
-<p><img src="/mp-fr.svg"></p>
+<p><img src="/2016/12/15/Herd-Lab/mp-fr.svg"></p>
 <p><strong>Quiz</strong>: How could we modify the model to avoid this execution, and potentially also avoids similar behaviors in the future? Hint: cycles are usually suspicious in memory model specifications.</p>
 <p><strong>Answer</strong>: We can see a <code>po · rf · po · fr</code> cycle in the graph. If we forbid such cycle, this execution will be eliminated.</p>
 <p>To do so, the model may be written as:</p>
@@ -152,7 +152,7 @@
 
 <p>Initial values are 0 by default.</p>
 <p>The rejected should-accept execution is shown below:</p>
-<p><img src="/SB+rfi-pos.png"></p>
+<p><img src="/2016/12/15/Herd-Lab/SB+rfi-pos.png"></p>
 <p>Apparently, the <code>rf · po · fr · rf · po · fr</code> relation cycle is recognized as <code>ghb</code> cycle and thus rejected.</p>
 <p><strong>Quiz</strong>: How would you propose to eliminate this false negative case while still being general enough?</p>
 <p><strong>Answer</strong>: The basic idea is to eliminate the specific relations among the cycle components. For example, it would suffice to exclude this kind of <code>Wx=1 --rf--&gt; Rx=1</code> and <code>Wy=1 --rf--&gt; Ry=1</code> relations.</p>
@@ -178,7 +178,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">X86 CoRWR</span><br><span class="line">&#123; &#125;</span><br><span class="line"> P0          ;</span><br><span class="line"> MOV EAX,[x] ;</span><br><span class="line"> MOV [x],$1  ;</span><br><span class="line"> MOV EBX,[x] ;</span><br><span class="line">exists (0:EAX=1 /\ 0:EBX=0)</span><br></pre></td></tr></table></figure>
 
 <p>This CoRWR litmus test cares about single thread correctness. The query asks if it’s possible to first read the future writes, and read initial writes later on. This is not rejected by current model via the acyclic check as following diagram do not have a cycle:</p>
-<p><img src="/CoRWR.png"></p>
+<p><img src="/2016/12/15/Herd-Lab/CoRWR.png"></p>
 <p>However, this is not replay-able in website herd7. This weak behavior of this litmus test never shows up. This is due to the extra “uniproc” check executed by herd7 tool, which eliminates such sequential weird behaviors. And the website version of herd7 does not allow changing this setting.</p>
 <p>To show this, we need to use offline version of herd7. Running commands</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">herd7 -model minimal CoRWR.litmus</span><br><span class="line">herd7 -model uniproc CoRWR.litmus</span><br></pre></td></tr></table></figure>

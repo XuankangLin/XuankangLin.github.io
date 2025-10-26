@@ -8,7 +8,7 @@
 <br/>
 
 <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>这个是我当前在做的事情之一，里头需要得到一个小 program 在某个特定的 relaxed memory models 下的所有 executions &#x2F; traces.</p>
-<p>经过调研，<a target="_blank" rel="noopener" href="http://diy.inria.fr/">Herd7</a> 是能够做到我想要的事情的。之前我还帮老板准备了一个使用 herd7 来体验不同的 RMM 的 lab, 写在<a href="/2016/12/15/Herd-Lab/">另一篇博客</a>里了。Herd7 能够输出以下边这样的图片的格式输出 executions: <img src="/mp-fr.svg"> 显然在生成的过程中肯定会存有每幅图对应的中间状态，我的目标就是把这些中间状态打印到一个文件里存起来。</p>
+<p>经过调研，<a target="_blank" rel="noopener" href="http://diy.inria.fr/">Herd7</a> 是能够做到我想要的事情的。之前我还帮老板准备了一个使用 herd7 来体验不同的 RMM 的 lab, 写在<a href="/2016/12/15/Herd-Lab/">另一篇博客</a>里了。Herd7 能够输出以下边这样的图片的格式输出 executions: <img src="/2016/12/18/Herd-Code-Learning-Extension-Implementation/mp-fr.svg"> 显然在生成的过程中肯定会存有每幅图对应的中间状态，我的目标就是把这些中间状态打印到一个文件里存起来。</p>
 <p>在这一篇博客里，我大致记录了整个实验、扩展的流程，对于想要了解 herd7 工具的实现的同学应该是会有一点帮助的吧，仅此而已了。除此之外的一点点干货可能就是 OCaml 的一点配置经验了吧。不知道会不会有人认真看完全文呢 😂</p>
 <p>herd7 的代码可以在<a target="_blank" rel="noopener" href="https://github.com/herd/herdtools7">这里</a>可以找到，我自己 fork 后修改的版本在<a target="_blank" rel="noopener" href="https://github.com/AndriyLin/herdtools7">这里</a>。</p>
 <p>这里我基于的是 v7.43 的版本。其实我原本还尝试过 diy v5.99 （diy 是旧版本的名字，v7 改名了）里的代码的，因为觉得旧版本的代码可能会更短小、更方便理解。但是我在旧版本下好像 <code>make</code> 一下就自动 build + install 了.. 不方便调试，也没有找到生成的中间文件路径用于 merlin-mode 的代码解析（这个真的很关键！！），所以就算了。而且我随便对比了两个版本下的几个文件，比如 top&#x2F;top_herd, mem&#x2F;mem, 好像并没有特别大的变化。反正最后也基本满足目标了呗 😁。</p>
